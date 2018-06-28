@@ -1,0 +1,9 @@
+name: "sta248Summer2018"
+output_dir: "."
+navbar:
+  title: "Welcome to STA248H1: Statistics for Computer Scientists"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
