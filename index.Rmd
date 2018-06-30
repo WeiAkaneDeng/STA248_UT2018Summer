@@ -1,5 +1,9 @@
 ---
-Welcome to STA248H1: Statistics for Computer Scientists
+title:Welcome to STA248H1 - Statistics for Computer Scientists
 ---
 
 You can find up to date information here. Please check regularly for new items.
+
+## Lecture Slides
+
+- [lecture 1](https://github.com/WeiAkaneDeng/STA248_UT2018Summer/blob/master/lecture1.html).
