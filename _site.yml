@@ -5,5 +5,8 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
+    - text: "Syllabus"
       href: about.html
+      
+- title: Lecture 1
+  url: lecture1.html
