@@ -1,7 +1,6 @@
 ---
 title: "STA248H1: Statistics for Computer Scientists"
 author: "Course Instructor: Wei Q. Deng (wei.deng@mail.utoronto.ca)"
-date: "July-August 2018"
 output:
   html_document:
     fig_height: 3

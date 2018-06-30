@@ -1,9 +1,18 @@
 ---
-title:Welcome to STA248H1 - Statistics for Computer Scientists
+title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 ---
 
-You can find up to date information here. Please check regularly for new items.
+### Course Instructor: 
++ [Wei Q. Deng](wei.deng@mail.utoronto.ca)
++ Office: Steward building 103A (149 College Street)
++ Office hours: Monday 4-6pm, Wednesday 4-6pm (from second week)
 
-## Lecture Slides
+### Class schedule
++ Monday 18:00-21:00 in SS 2118 (no lecture on Monday, August 6 (Civic holiday))
++ Wednesday 18:00-21:00 in SS 2118.
+
+**You can find up to date information here. Please check regularly for new items**
+
+### Lecture Slides
 
 - [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lecture1.html).

@@ -7,7 +7,8 @@ navbar:
       href: index.html
     - text: "Syllabus"
       href: about.html
-<<<<<<< HEAD
+    - text: "Blackboard"
+      href: https://portal.utoronto.ca
 
 output:
   html_document:
@@ -15,8 +16,4 @@ output:
     highlight: textmate
     include:
       after_body: footer.html
-    css: styles.css
-=======
-    - text: "Blackboard"
-      href: https://portal.utoronto.ca
->>>>>>> 76cef82b7590cedf0602170647ec49b77270c672
+    css: styles.css    
