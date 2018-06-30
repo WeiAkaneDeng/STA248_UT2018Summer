@@ -9,20 +9,11 @@ navbar:
       href: about.html
     - text: "Blackboard"
       href: https://portal.utoronto.ca
-<<<<<<< HEAD
 
-=======
-      
->>>>>>> a82d5d5f5bc7320bb51e043910aafd4f63ed86cb
 output:
   html_document:
     theme: cosmo
     highlight: textmate
     include:
       after_body: footer.html
-<<<<<<< HEAD
     css: styles.css    
-=======
-    css: styles.css
-
->>>>>>> a82d5d5f5bc7320bb51e043910aafd4f63ed86cb
