@@ -7,3 +7,5 @@ navbar:
       href: index.html
     - text: "Syllabus"
       href: about.html
+    - text: "Blackboard"
+      href: https://portal.utoronto.ca
