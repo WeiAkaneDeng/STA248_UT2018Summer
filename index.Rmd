@@ -6,4 +6,4 @@ You can find up to date information here. Please check regularly for new items.
 
 ## Lecture Slides
 
-- [lecture 1](https://github.com/WeiAkaneDeng/STA248_UT2018Summer/blob/master/lecture1.html).
+- [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lecture1.html).
