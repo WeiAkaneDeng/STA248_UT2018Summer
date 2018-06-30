@@ -8,5 +8,6 @@ navbar:
     - text: "Syllabus"
       href: about.html
       
-- title: Lecture 1
-  url: lecture1.html
+            
+  title: Lecture 1
+  href: lecture1.html
