@@ -3,10 +3,10 @@ title: 'STA248H1: Statistics for Computer Scientists'
 author: 'Course Instructor: Wei Q. Deng (wei.deng@mail.utoronto.ca)'
 date: "July-August 2018"
 output:
-  html_document:
+  pdf_document:
     fig_height: 3
     fig_width: 5
-  pdf_document:
+  html_document:
     fig_height: 3
     fig_width: 5
   word_document:
@@ -37,7 +37,7 @@ Both **R** and **Python** are acceptable computing languages in this course, we 
 
 ### Course Website
 
-Everything you need for the course is hosted [here](https://weiakanedeng.github.io/STA248H1_2018Summer/). Please check frequently for posting of lecture slides, practice problems and test information.
+Everything you need for the course is hosted [here](https://weiakanedeng.github.io/STA248_UT2018Summer/). Please check frequently for posting of lecture slides, practice problems and test information.
 
 
 ### Textbook and learning resources
