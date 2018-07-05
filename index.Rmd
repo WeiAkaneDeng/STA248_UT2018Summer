@@ -2,6 +2,10 @@
 title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 ---
 
+
+**You can find up to date information here. Please check regularly for new items**
+
+
 ### Course Instructor: 
 + [Wei Q. Deng](wei.deng@mail.utoronto.ca)
 + Office: Steward building 103A (149 College Street)
@@ -11,8 +15,16 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 + Monday 18:00-21:00 in SS 2118 (no lecture on Monday, August 6 (Civic holiday))
 + Wednesday 18:00-21:00 in SS 2118.
 
-**You can find up to date information here. Please check regularly for new items**
+### Midterm date
++ Date: **July 23rd**
+
+
+### DataCamp 
+
+You can take a look at [DataCamp](https://www.datacamp.com). Information on programming modules will be released soon. The deadline for the completion of two modules is set for **August 5th**.
 
 ### Lecture Slides
 
-- [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lecture1.html).
+- [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.pdf) and the car [dataset](https://weiakanedeng.github.io/STA248_UT2018Summer/Cars93.csv). The rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.Rmd) for you to look at the code chunks.
+
+

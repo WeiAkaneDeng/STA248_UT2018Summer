@@ -1,0 +1,947 @@
+---
+title: "Welcome and introduction to statistics"
+author: "Wei Q. Deng"
+date: "July 4th 2018"
+output:
+  beamer_presentation:
+    includes:
+    incremental: no
+  ioslides_presentation:
+    incremental: yes
+  slidy_presentation:
+    incremental: yes
+subtitle: (Week 01 lecture notes)
+fontsize: 10pt
+---
+
+
+```{r, setup, include=FALSE}
+require(mosaic)   # Load additional packages here
+library(knitr)
+library(reticulate)
+use_python("/usr/local/bin/python") 
+use_virtualenv("r-reticulate")
+py_available(TRUE)
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+trellis.par.set(theme=theme.mosaic()) # change default color scheme for lattice
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="tiny")   # slightly smaller font for code
+knitr::knit_engines$set(python=reticulate::eng_python)
+```
+
+
+# A little about me
+- Wei Q. Deng
+- Current PhD in Statistics, MSc in Statistical Genetics and BSc in Mathematics and Statistics
+- Research interests: principal component analysis, classification and clustering, machining learning heuristics, statistical computing and graphics/data visualization, statistical genetics.
+
+
+
+# Overview of Today's Lecture
+
++  First half: course syllabus and statistics
+\begin{itemize} 
+\item statistics as a data science
+\item population and sample
+\item parameters and statistics
+\end{itemize}
+
++ Second half: summarizing data (graphically and through descriptive statistics)
+\begin{itemize} 
+\item descriptive statistics (idea of a centre/location, spread/scale of a distribution)
+\item graphical representations (bar, histogram, boxplot, scatterplot, qqplot)
+\item information from the graphs (outliers, model assumptions, dependence)
+\item summarizing two or more variables simultaneously
+\item data transformation 
+\end{itemize}
+
+<!-- data wrangling and some common data cleaning tricks-->
+
+
+
+# Notes about syllabus
+\begin{itemize}
+\item {\bf Course syllabus} is available on blackboard and \url{https://weiakanedeng.github.io/STA248H1_2018Summer/}.
+
+\item {\bf Class schedule}
+     \begin{itemize}
+        \item Monday 18:00-21:00 in {\bf SS 2118} (no lecture on Monday, August 6 (Civic holiday))
+        \item Wednesday 18:00-21:00 in {\bf SS 2118}.
+        \item Your TA Tianle Chen will be covering two lectures the week of July 30th. 
+      \end{itemize}
+      
+\item {\bf Office Hours}
+   \begin{itemize}
+   \item hours: Monday 4-6pm, Wednesday 4-6pm (starts from 2nd week)
+   \item location: \textbf{103A} Steward Building (149 College Street 
+   \item Other times by appointment only.
+   \end{itemize}
+\item {\bf Textbook(s)}
+\begin{itemize}
+\item No official textbook for the course.
+\item Reference (recommended)
+\begin{itemize}
+\item {\it Open Intro Statistics}, 3rd edition \url{https://www.openintro.org/stat/textbook.php}
+\item Chapter 2-3 can be used as review for STA247
+\item topics in Chapter 1,4,5,7 and some of 8 are covered in this course
+\item {\it Probability and Statistics for Engineering and the Sciences} **9**th Edition by Jay L. Devore
+\end{itemize}
+\end{itemize}
+\end{itemize}
+
+
+# Notes about syllabus
+\begin{itemize}
+\item All course material (syllabus, lecture slides, practice problems and solutions) will be posted on portal and \url{https://weiakanedeng.github.io/STA248H1_2018Summer/}.
+\item Portal contains a {\bf Discussion Board} that you can use to communicate with others, but it will not be monitored. 
+\item For all inquiries, please come to office hours or email me at \url{wei.deng@mail.utoronto.ca}.
+\item For general annoucements and test information, I will be sending the entire class email through portal. Please make sure that your \underline{mail.utoronto.ca} account is configured correctly and check it frequently
+\end{itemize}
+
+
+
+# Course Objectives
+
++ This course covers some theory for the most commonly used statistical methods. 
+
++ The main goal is to develop problem solving skills with emphasis on thinking with data, constructing models for data analysis and assessing quality of analyses.
+
++ Learnt to do data analysis using R or Python via DataCamp modules.
+
+
+
+# Statistics 
+
++ most statistical methods: **estimation** and **prediction**
+
++ **theoretical** statisticians focus on the methodology and theory that methods for estimation or prediction have desirable properties (such as unbiasedness and consistency)
+
++ **applied** statisticians focus on the actual execution of these methods on real data
+
+
+# Applied Statistics 
+
+The process of scientific investigations can be summarized in four stages \footnote{OpenIntro page 7}:
+
+\begin{enumerate}
+\item Identify a question or problem.
+\item Collect relevant data on the topic.
+\item Analyze the data.
+\item Form a conclusion.
+\end{enumerate}
+
+Topics related to Stage 2 are covered in Survey Sampling and Design of Experiments. 
+
+Here (and most of the other applied statistics courses) focus on stages 3-4, the  process of learning from data.
+
+
+# Applied Statistics 
+
+The collected data might be from one of the following methods:
+
++ survey
++ observation
++ experiment
++ secondary data 
+
+
+# Applied Statistics vs. data science
+
+The data science is more rigourous in its treatment of
+
++ data preparation 
+
++ data presentation 
+
++ data analysis  
+
+while traditional statistics deal with data analysis via statistical modelling alone.
+
+Modern data (such as those collected from social media, netflix, or genomics, image data etc.) can be very heterogenous, complex and even misleading without proper data preparation.
+
+
+
+# Statistics: to think with data.
+
++ In an ideal world, we have the entire \textbf{population} of data. 
+
++ In practice, we only have a subset of it, i.e. a \textbf{sample} of the data.
+
+
+An important concept is \textcolor{blue}{random sampling}, in which samples are taken from population at random. 
+
++ This ensures the collection of samples are **representative** of the population, and statistics calculated from samples can enjoy certain properties.
+
++ If we believe the sample collected truly arise from the population, then any information we extract from the sample, should give us some idea of the information we can obtain from the entire population.
+
+
+<!-- The definition of population and samples are relative and depends on the research question.
+
+Everyone who is currently enrolled at University of Toronto could be the population if our study/research focuses only on current students at UT. In the meantime, it could be a sample if our study/research focuses on all university students in Ontario. 
+
+Suppose we have taken a random sample of students enrolled at UT. A clear definition of what the target population is helps clarify how we generalize our inference, i.e. you can  
+
+-->
+
+
+# Statistics, but what is a statistic?
+
+A **statistic** $f(\mathbf{x}_n)$ is a function of the sample data ($\mathbf{x}_n = (x_1, x_2, \dots, x_n)$). 
+
+As $n \to \infty$, some statistic could approach the population value. 
+
+On the other hand, a statistical **parameter** (broadedly referred to as $\theta$) is constant associated with the population ($\mathbf{x} = (x_1, x_2, \dots, x_n, \dots)$).
+
+Statisticians often use **statistics** ($f(\mathbf{x}_n)$) to estimate **parameters** ($\theta$), which could also be referred to as **estimators** ($\hat{\theta}$).
+ 
+
+# Connection to other courses
+
+- Introduction to probability (eg. STA247/257:learn several distributions, know how to find mean, variance, etc.)
+
+```{r  out.width = "80%", echo=F}
+include_graphics("fig257.pdf") 
+```
+
+\begin{center}
+\includegraphics[scale=0.35]{fig257.pdf}
+\end{center}
+
+- Introduction to statistical inference (eg, STA248/STA261: know how to estimate model parameter $\theta$, CI,hypothesis testing, etc)
+
+```{r  out.width = "80%", echo=F}
+include_graphics("fig261.pdf") 
+```
+
+\begin{center}
+\includegraphics[scale=0.35]{fig261.pdf}
+\end{center}
+
+
+
+# Connection to other course
+
+Our course ends on linear regression, which will be explored in more details in STA302 and more general forms of regression in STA303 (logistic and Poisson).
+
+- STA302: methods of data analysis I (the major topic is on linear regression)
+
+```{r  out.width = "90%", echo=F}
+include_graphics("fig302.pdf") 
+```
+
+\begin{center}
+\includegraphics[scale=0.34]{fig302.pdf}
+\end{center}
+
+
+
+
+
+
+# Let's look at some data!
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, eval=F}
+library(MASS)
+data(Cars93)
+write.csv(Cars93, "Cars93.csv", row.names=FALSE)
+```
+
+In R:
+```{r, message=FALSE}
+library(MASS)
+data(Cars93)
+print(Cars93[1:5,1:5])
+#head(Cars93)
+```
+
+# 
+
+In Python:
+
+\tiny
+```{python, size = 'tiny'}
+import pandas
+Cars93 = pandas.read_csv("Cars93.csv")
+head = Cars93.head()
+print(head)
+```
+
+
+
+
+# What types of variables are present in this dataset?
+
+Generally, two main types of variables: categorical and continuous. 
+
++ Categorical variables
+\begin{itemize}
+\item Nominal variable (no order), e.g., Manufacturer or Model
+\item Ordinal variable (ordered), e.g., Cylinders
+\end{itemize}
+
++ Continuous variables 
+\begin{itemize}
+\item Interval variable (a unit difference has the same meaning), e.g. price
+\item Ratio variable (different meanings depending on the value), e.g. temperature in Kelvin.
+\end{itemize}
+
+
+
+# Why different types of variables are used/needed?
+
+You can also think of these as different levels of resolutions to the measurements. 
+
+For example, grades of students in STA130, 
+
+which could be collected as a **nominal variable** with two levels: 
+
++ middle range grades
++ extreme high or low grades
+
+You can also be more specific and define an **ordinal variable** ``grade'' with three levels: 
+
++ excellent
++ adequate
++ poor
+
+A **continuous** grade could be the actual marks received out of 100, and thus is an interval variable.
+
+
+# Why different types of variables are used/needed? (cont'd)
+
+More on interval and ratio variables:
+
++ for interval variables, the zero is relative, for ratio, there is an absolute zero 
+
+
++ the same information can be represented either as an interval or ratio variable (year of birth or age)
+
+
++ the distinction is more important in specific applications (e.g. clinical epidemiology)
+
+<!--  which helps you decide whether analyses should be sensitive to the ratio or the differences of two separate measurements. -->
+
+
+# What types of variables do statistical programs use?
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+In R:
+\begin{itemize} 
+\item factor (categorical with levels)
+\begin{itemize}
+\item nominal 
+\item ordinal
+\end{itemize}
+\item numeric
+\begin{itemize}
+\item integer (discrete as supposed to continuous)
+\item continuous
+\end{itemize}
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+In python:
+\begin{itemize}
+\item string 
+\item integer (discrete as supposed to continuous)
+\item float (with digits)
+\end{itemize}
+\end{column}
+\end{columns}
+
+
+\tiny
+```{r}
+class(1)
+```
+
+```{python}
+print(type(3.4))
+```
+
+
+# Back to the data 
+
+Categorical variables:
+
+\scriptsize
+
+```{r, size = 'tiny'}
+ names(Cars93)[sapply(Cars93, is.factor)]
+```
+\normalsize
+
+ Continuous variables:
+
+\scriptsize
+
+```{r, size = 'tiny'}
+ names(Cars93)[sapply(Cars93, is.numeric)]
+```
+
+
+# A quick summary
+
++ Different types of variables require different graphical representations
+
++ Different types of variables contain different levels of details
+
++ Different types of variables require different statistical techniques to analyze (next a few lectures; STA302 and STA303)
+
+
+
+#
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{How to graphically represent each type of variable?
+}
+}
+\end{center}
+
+
+
+# categorical variables
+
+a pie chart
+
+\small
+
+```{r, fig.width=4, fig.height=4,highlight=FALSE}
+pie.price <- table(Cars93$Type)/length(Cars93$Type)
+names(pie.price) <- names(table(Cars93$Type))
+pie(pie.price)
+```
+
+
+
+
+
+
+
+# categorical variables (cont'd)
+
+or a bar plot
+
+\small
+
+```{r, fig.width=5.8, fig.height=3.5, highlight=FALSE}
+barplot(table(Cars93$Type), col = rainbow(20))
+```
+
+
+# categorical variables (cont'd)
+
+\begin{itemize} 
+
+\item pie chart: difficult to interpret when many categories are present
+
+\begin{itemize} 
+\item when a few categories
+\item one or two dominate categories
+\item should include percentages
+\end{itemize} 
+
+
+\item bar plot: a direct comparison and more frequently used in science
+
+\begin{itemize} 
+\item bar height corresponds to percentages or counts
+\end{itemize}
+
+\end{itemize} 
+
+
+# continuous variables
+
+a histogram
+
+\tiny
+
+```{r, fig.width=4.5, fig.height=2.8,highlight=FALSE}
+library(ggplot2)
+ggplot(data=Cars93, aes(x=Fuel.tank.capacity)) +
+  geom_histogram(binwidth=2, colour="black", fill="white") +
+  xlab("capacity in US gallons")  + ggtitle("Fuel tank capacity") +
+  xlim(0,70)
+#hist(Cars93$Fuel.tank.capacity, main = "Fuel tank capacity", xlab = "capacity in US gallons")
+```
+
+# continuous variables (cont'd)
+
+or a boxplot:
+
+\tiny
+
+```{r, fig.height=3, fig.width=4, highlight=FALSE}
+ggplot(data = Cars93, aes(x = "", y = Fuel.tank.capacity)) + 
+  geom_boxplot() + xlab("") + ylab("capacity in US gallons") + 
+  ggtitle(paste("Fuel tank capacity"))  
+#boxplot(Cars93$Fuel.tank.capacity, main = "Fuel tank capacity", ylab = "capacity in US gallons")
+```
+
+
+# continuous variables (cont'd)
+suspecting this might be following a normal distribution
+\scriptsize
+
+```{r, fig.height=3, fig.width=3, highlight=FALSE}
+qqnorm(Cars93$Fuel.tank.capacity)
+qqline(Cars93$Fuel.tank.capacity, col=2)
+```
+
+# continuous variables (cont'd)
+
+all three types are commonly used:
+
++ histogram: a direct visual on the overall distribution (sample density)
+
++ boxplot: useful for spotting anomalies
+
++ qqplot: useful for a direct comparison with another distribution
+
+
+
+#
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{How to summarize information in each type of variable numerically?
+}
+}
+\end{center}
+
+
+# 
+
+Think about what kind of information we can/want to extract from a variable.
+
+For example, car type:
+
+\small
+```{r}
+print(Cars93$Type[1:10]) 
+```
+
+```{r}
+print(Cars93$Cylinders[1:10]) 
+```
+
+```{r}
+print(Cars93$Fuel.tank.capacity[1:10]) 
+```
+
+
+# Descriptive statistics
+
++ descriptive statistics are by definition, statistics, calculated from the samples. 
+
++ they provide a concise summary on the sample data distribution
+
+Why look at a statistic instead of the entire collection of data?
+
++ to learn data structure by an initial data examination 
+
++ to help spot anomaly in data collection/recording (data quality control)
+
++ sometimes the summary statistic is the quantity we are interested in (e.g. sample mean)
+
++ to help make a decision on the next steps (statistical models)
+
+
+
+# Descriptive statistics for categorical variables
+
++ central tendency 
+\begin{itemize}
+\item mode: category with the highest occurence/frequency 
+\end{itemize}
+
++ overall distribution 
+\begin{itemize}
+\item frequencies 
+\item counts
+\end{itemize}
+
++ anomlies
+\begin{itemize}
+\item missing value
+\item outliers
+\end{itemize}
+
+
+
+# Back to the data 
+
+\scriptsize
+
+```{r, size = 'tiny', highlight=FALSE}
+table(Cars93$Cylinders)
+table(Cars93$Cylinders)/sum(table(Cars93$Cylinders))
+
+table(Cars93$Type)
+table(Cars93$Type)/sum(table(Cars93$Type))
+```
+
+
+
+
+
+
+
+# Descriptive statistics for continuous variables
+
++ central tendency 
+\begin{itemize}
+\item mean 
+\item median
+\end{itemize}
+
+
++ spread/dispersion
+\begin{itemize}
+\item standard deviation/variance
+\item interquartile range
+\item range
+\item absolute mean/median deviation
+\end{itemize}
+
+
++ overall distribution/shape
+\begin{itemize}
+\item skewness
+\item kurtosis
+\item modality 
+\end{itemize}
+
+
++ anomlies
+\begin{itemize}
+\item missing value
+\item outliers
+\end{itemize}
+
+
+
+
+
+# measure of central tendency in numerical variables
+
+\small
+\begin{itemize}
+\item mean: $\bar{x}$ the arithmetic mean of all observations 
+\item median: $\tilde{x}$ the most central value \footnote{when there is an even number of observations, you take the average of the middle two}
+\end{itemize}
+
+
+# computing central tendency measures
+
+\scriptsize
+In R:
+
+```{r, highlight=FALSE}
+print(c(mean(Cars93$Luggage.room), median(Cars93$Luggage.room)))
+print(c(mean(Cars93$Luggage.room, na.rm=T), median(Cars93$Luggage.room, na.rm=T)))
+```
+In Python
+```{python}
+import pandas
+Cars93 = pandas.read_csv("Cars93.csv")
+import numpy
+print("median", numpy.median(Cars93[["Luggage.room"]]))
+print("mean", numpy.mean(Cars93[["Luggage.room"]]))
+```
+
+# measure of symmetry in shape: skewness
+
++ If the distribution is symmetric, then mean and median tend to be really close.
+
++ On the other hand, if the mean is less or greater than the median, it could indicate a **skewed** distribution, e.g. income of household (mean $<$ median)
+
++ Median and mean both capture the centre, but median is a more **robust** measure as it is not sensitive to **outliers** or extreme values.
+
+A more formal definition of skewness:
+
++ **skew to the left**: median is greater than the mean
++ **skew to the right**: median is less than the mean
+
+
+# skew to the left
+
+\tiny
+
+```{r, fig.width=3, fig.height=3, comment=NA}
+library(ggplot2)
+ggplot(data=Cars93, aes(x=Rev.per.mile)) +
+  geom_histogram(binwidth=100, colour="black", fill="white") + 
+  xlab("Engine revolutions per mile")  + 
+  ggtitle("Engine revolutions \n per mile (in highest gear).")
+mean(Cars93$Rev.per.mile); median(Cars93$Rev.per.mile)
+```
+
+
+# skew to the right
+
+\tiny
+
+```{r, fig.width=3, fig.height=3, comment=NA}
+library(ggplot2)
+ggplot(data=Cars93, aes(x=Min.Price)) +
+  geom_histogram(binwidth=2, colour="black", fill="white") +
+  xlab("Price in $1K")  + ggtitle("Min.Price")
+mean(Cars93$Min.Price); median(Cars93$Min.Price)
+```
+
+
+
+
+
+# measure of dispersion (or spread)
+
+Several measures are typically used:
+
++ Interquartile range (IQR): a measure of variability, based on dividing a data set into quartiles
++ Standard deviation/Variance: 
+\[\sigma = \sqrt{\sum_{i=1}^n (x_i - \bar{x})^2/n}\]
++ Absolute mean/median deviation: 
+\[\sum_{i=1}^n|x_i - \bar{x}|  \text{   or   }  \sum_{i=1}^n|x_i - \tilde{x}|\]
++ Range: minimum to maximum
++ Coefficient of variation: 
+\[\frac{\sigma}{\mu}\] 
+
+
+# Quantiles and other percentiles
+
++ The 25th percentile is known as the first quartile ($Q1$)
++ The 10th percentile is known as the first decile ($D1$)
+
+There are *three* quantiles ($Q1, Q2, Q3$) correspond to 25th, 50th, and 75th percentile of the data, dividing the data to **four** equal parts.
+
+Interquartile range (IQR):
+\[
+Q3-Q1
+\]
+
+
+There are *nine* deciles ($D1, \dots, D9$) correspond to 10th, ..., 90th percentile of the data, dividing the data to **ten** equal parts.
+
+Typically used when we care more about the tails of the data.
+
+
+# Connection between IQR and SD for a standard normal random variable 
+
+Let $\mathrm{x}$ be a standard normally distributed random variable, i.e. $\mathrm{x} \sim \mathcal{N}(0,1)$. 
+
+We want to find out what the first quantile is by solving the following:
+\[
+Pr(\mathrm{x} > a) = Pr(\frac{\mathrm{x}-\mu}{\sigma} > \frac{a-\mu}{\sigma}) = 0.25
+\]
+
+alternatively
+
+\[
+Pr(\mathrm{x} < a) = 1- 0.25 = 0.75
+\]
+
+You can find $a$ by 
+
++ using a standard normal table (know how to do this)
++ use R
++ use Python
+
+(notice we are talking about a random variable and not an observed variable any more)
+
+
+
+# using a standard normal table
+
+```{r  out.width = "100%", echo=F}
+include_graphics("normal-table-large.png") 
+```
+
+
+\begin{center}
+\includegraphics[scale=0.6]{normal-table-large.png}
+\end{center}
+
+
+
+# using R or Python
+
+```{r}
+ qnorm(0.75)
+```
+
+
+```{python}
+from scipy.stats import norm
+a = norm.ppf(0.75)
+print(a)
+```
+
+
+# Connection between IQR and SD for a standard normal random variable (cont'd)
+
+
+```{r  out.width = "80%", echo=F}
+include_graphics("598px-Boxplot_vs_PDF.png") 
+```
+\footnote{\url{https://en.wikipedia.org/wiki/Interquartile_range}}
+
+
+# Connection between IQR and SD for a standard normal random variable (cont'd)
+
++ $a \sim 0.675$, which means that $0.675\times 2 = 1.35 = 1.35\sigma$ corresponds to the IQR. 
+
++ similarly, we see that $4\sigma$ roughly corresponds to the inter 95\%-quantile range.
+
++ to find the inter $q$-quantile range that $a\sigma$ corresponds to, you need to find the quantile at $q+z$ and $q-z$, where $q + 2*z = 1$. 
+
+
+
+# Connection between IQR and SD for a standard normal random variable (cont'd)
+ you should try to work this out both ways 
+
++ given an inter-quantile range $q$, find the number of multiples of $\sigma$
+
+e.g. what is the value of $a$ such that the region $\pm a\sigma$ corresponds to an inter 99\%-quantile range?
+
++ given a multiple of $k\sigma$, find the inter-quantile range $q$.
+
+e.g. what is the inter-quantile range that corresponds to the region of $\pm 3\sigma$?
+
+
+
+
+# Coefficient of variation:
+
+\[\frac{\sigma}{\mu}\] is defined so the measure is dimensionless.
+
++ for ratio scale variable only
+
++ for log-normal distributed data this is roughly constant
+
+Similar idea for a robust dispersion measure, consider 
+\[
+ \text{quartile coefficient of dispersion} = \frac{Q3-Q1}{Q3+Q1}
+\]
+
+
+<!-- have a question on inter-quantile range and number of standard deviation for normal distribution -->
+
+
+  
+# measure of shape - the tails: kurtosis
+
+For distributions with similar mean, standard deviation and both symmetric, another possible difference in distribution arises in the tail.
+
+\tiny
+
+```{r, fig.height=3, fig.width=3, comment=NA}
+curve(dnorm(x, sd=sqrt(2)), -3,3, ylim=c(0, 0.4), xlab="", ylab = "Density")
+curve(dt(x, df=4), -3,3, col=2, add=T)
+mean(rnorm(1000, sd=sqrt(2))); sd(rnorm(1000, sd=sqrt(2)));
+mean(rt(1000, df=4)); sd(rt(1000, df=4));
+```
+
+
+
+
+
+
+
+
+
+# measure of shape - the peaks: modality
+
+Sometimes, it is possible to have two or more peaks in the distribution. 
+
+```{r, echo=FALSE, fig.width=4, fig.height=3, comment=NA}
+a <- c(rnorm(1000), rnorm(1000, mean = 4))
+ggplot(data=data.frame(a), aes(x=a)) +
+               geom_histogram(binwidth=0.5, colour="black", fill="white") + xlab("observations")  
+```
+
+
+# connecting the shape to a normal random variable
+
++ A normal random variable has only one peak
+
++ Due to the symmetry, the median and mean are very close
+
++ For a normal random variable, any centralized moments higher than the 2nd (variance), is either 0 (odd moments) or a multiple of the variance (even moments). So it suffices to look at only the first two. 
+
++ In other words, a sample measure of centralized skewness or kurtosis that deviates from the expected values (0 or 3$\sigma^4$) can indicate non-normality in the data.
+
+
+# what about descriptive statistics for two or more variables?
+
++ Discrete vs. Discrete: Cross-tabulations and contingency tables
++ Discrete vs. Continuous: Graphical representation via boxplots
++ Continuous vs. Continuous: Graphical representation via scatterplots
++ All possible combinations: Quantitative measures of dependence such as a range of correlation coefficients
+
+
+# Discrete vs. discrete
+
+```{r}
+table(Cars93$Type, Cars93$Origin)
+```
+
+# Discrete vs. Continuous
+
+```{r, fig.height=3, fig.width=3}
+tapply(Cars93$Fuel.tank.capacity, Cars93$Origin, "median")
+tapply(Cars93$Fuel.tank.capacity, Cars93$Origin, "mean")
+tapply(Cars93$Fuel.tank.capacity, Cars93$Origin, "sd")
+tapply(Cars93$Fuel.tank.capacity, Cars93$Origin, "IQR")
+```
+
+# Discrete vs. Continuous
+
+\tiny
+
+```{r, fig.height=3, fig.width=3}
+ggplot(data = Cars93, aes(x = Origin, y = Fuel.tank.capacity)) + 
+               geom_boxplot() + xlab("Origin") + ylab("capacity in US gallons") + ggtitle(paste("Fuel tank capacity"))  
+
+```
+
+# Discrete vs. Continuous
+
+\tiny
+
+```{r, fig.height=3, fig.width=4.5}
+ggplot(data=Cars93, aes(x=Fuel.tank.capacity, colour = Origin)) +
+               geom_density() + ylab("capacity in US gallons") + ggtitle(paste("Fuel tank capacity"))  
+```
+
+
+
+# Continuous vs. Continuous
+
+\small
+```{r, fig.width=3, fig.height=3}
+ggplot(data=Cars93, aes(x=Fuel.tank.capacity, y = Min.Price)) +
+               geom_point() + xlab("capacity in US gallons") + ylab("Min. Price") + ggtitle(paste("Fuel tank capacity"))  
+```
+
+
+
+# recap of this class
+
+\begin{itemize}
+
+\item know that statistics is the science of learning from data
+\item know how to summarize data 
+
+\begin{itemize}
+\item what are the appropriate descriptive statistics to use
+\item what are the appropriate graphical display to summarize information
+\item able to detect non-normality in data (outliers, distribution) 
+\end{itemize}
+
+\end{itemize}
+
