@@ -645,6 +645,7 @@ In R:
 print(c(mean(Cars93$Luggage.room), median(Cars93$Luggage.room)))
 print(c(mean(Cars93$Luggage.room, na.rm=T), median(Cars93$Luggage.room, na.rm=T)))
 ```
+
 In Python
 ```{python}
 import pandas
@@ -717,7 +718,7 @@ Several measures are typically used:
 + The 25th percentile is known as the first quartile ($Q1$)
 + The 10th percentile is known as the first decile ($D1$)
 
-There are *three* quantiles ($Q1, Q2, Q3$) correspond to 25th, 50th, and 75th percentile of the data, dividing the data to **four** equal parts.
+There are *three* quartiles ($Q1, Q2, Q3$) correspond to 25th, 50th, and 75th percentile of the data, dividing the data to **four** equal parts.
 
 Interquartile range (IQR):
 \[
@@ -736,13 +737,13 @@ Let $\mathrm{x}$ be a standard normally distributed random variable, i.e. $\math
 
 We want to find out what the first quantile is by solving the following:
 \[
-Pr(\mathrm{x} > a) = Pr(\frac{\mathrm{x}-\mu}{\sigma} > \frac{a-\mu}{\sigma}) = 0.25
+Pr(\mathrm{x} < a) = Pr(\frac{\mathrm{x}-\mu}{\sigma} < \frac{a-\mu}{\sigma}) = 0.25
 \]
 
 alternatively
 
 \[
-Pr(\mathrm{x} < a) = 1- 0.25 = 0.75
+Pr(\mathrm{x} > a) = 1- 0.25 = 0.75
 \]
 
 You can find $a$ by 
