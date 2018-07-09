@@ -196,14 +196,6 @@ F_X(x) = \frac{1}{2}\Big[1+\text{err}(\frac{x-\mu}{\sigma})\Big]
 
 
 
-# A question to start today
-
-
-
-
-
-
-
 # Topics covered in this lecture
 
 \begin{itemize}
@@ -231,13 +223,6 @@ F_X(x) = \frac{1}{2}\Big[1+\text{err}(\frac{x-\mu}{\sigma})\Big]
 \item Consistency
 \item Unbiasedness
 \item Robustness
-\end{itemize}
-
-\item Using bootstrap methods to estimate parameters
-
-\begin{itemize}
-\item parametric bootstrap
-\item nonparametric bootstrap
 \end{itemize}
 
 \end{itemize}
@@ -362,6 +347,14 @@ Let $Y$ be the number of samples greater than 200, and it has a hypergeometric d
 + Suppose the finite population remains the same $\{1, \dots, 1000\}$, but we are taking 100 samples, repeat the calculation. Are the two probabilities different now?
 
 + What do you conclude from these calculations?
+
+
+
+
+
+
+
+
 
 
 ---- 
