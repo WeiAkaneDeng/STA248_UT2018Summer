@@ -1,0 +1,1072 @@
+---
+title: "Sampling distribution and parameter estimation"
+author: "Wei Q. Deng"
+date: "July 9th 2018"
+output:
+  beamer_presentation:
+    includes:     
+      in_header: wei-beamer-header-simple.txt
+    incremental: no
+  ioslides_presentation:
+    incremental: yes
+  slidy_presentation:
+    incremental: yes
+subtitle: (Week 02 lecture notes)
+fontsize: 10pt
+---
+
+
+```{r, setup, include=FALSE}
+require(mosaic)   # Load additional packages here
+library(knitr)
+library(reticulate)
+library(ggplot2)
+library(MASS)
+library(dplyr)
+use_python("/usr/local/bin/python") 
+use_virtualenv("r-reticulate")
+py_available(TRUE)
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+trellis.par.set(theme=theme.mosaic()) # change default color scheme for lattice
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="tiny")   # slightly smaller font for code
+knitr::knit_engines$set(python=reticulate::eng_python)
+
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+```
+
+
+# Recap from last lecture 
+
++ Descriptive statistics (numerical summaries)
++ Boxplot 
++ Connecting boxplot and histogram (where is the mean/median roughly, what about skewedness?)
++ IQR (and other inter quantile range) 
+
+
+# Descriptive statistics
+
+* to learn data distribution
+* attributes for features of a distribution 
+    - central tendency
+    - dispersion/spread
+    - symmetry/skewedness
+    - shape of tails
+    - modality
+    - other anomalies such as missing values and outliers
+* a quick way to visualize data distribution with just five numbers
+    - maximum
+    - 3rd quartile (75\% percentile)
+    - median (50\% percentile)  
+    - 1st quartile (25\% percentile)
+    - minimum
+
+
+# Boxplot
+
+Boxplot provides a visualization of how data behave using the five descriptive statistics.
+
+\begincols
+\begincol{.48\textwidth}
+```{r, fig.height=2.8, fig.width=2.5, highlight=FALSE, size="tiny", width=50, echo=F}
+A <- data.frame("y"=rnorm(1000))
+ggplot(data = A, aes(x = "", y = y)) + geom_boxplot() + xlab("") + ylab("") + geom_hline(yintercept=c(quantile(A$y,0),
+   quantile(A$y,0.5), quantile(A$y,0.75), quantile(A$y,0.25), quantile(A$y,1)), color="black", linetype="dashed") 
+```
+\endcol
+\begincol{.48\textwidth}
+\begin{itemize}
+\item the width of the box gives the IQR (50\% of the data)
+\item the length of the whiskers is 1.5 IQR
+\item all observations outside of the $\pm 2\text{IQR}$ range (from median) are shown as dots
+\item outliers are defined by values less than $Q1-1.5\text{IQR}$ or greater than $Q3+1.5\text{IQR}$
+\end{itemize}
+\endcol
+\endcols
+
+
+# Boxplot and Histogram
+\begincols
+\begincol{.60\textwidth}
+```{r, fig.height=2, fig.width=3, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in"}
+A <- data.frame("y"=rnorm(1000))
+ggplot(data = A, aes(x = "", y = y)) + geom_boxplot() + 
+  xlab("") + ylab("") + geom_hline(yintercept=c(quantile(A$y,0),
+  quantile(A$y,0.5), quantile(A$y,0.75), quantile(A$y,0.25), 
+  quantile(A$y,1)), color="black", linetype="dashed") + coord_flip()
+```
+
+```{r, fig.height=1.95, fig.width=2.95, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in"}
+ggplot(data = A, aes(x = y)) + geom_histogram(binwidth=0.5, colour="black", fill="white") + xlab("") + ylab("") + geom_vline(xintercept=c(quantile(A$y,0),
+quantile(A$y,0.5), quantile(A$y,0.75), quantile(A$y,0.25), quantile(A$y,1)), color="black", linetype="dashed") +  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+\endcol
+\begincol{.4\textwidth}
+\begin{itemize}
+\item boxplot gives a better visual for spread and identifying outliers
+\item histogram shows the overall shape and tail better 
+\item both can be used to identify symmetry/asymmetry 
+\end{itemize}
+\endcol
+\endcols
+
+
+
+
+# Boxplot and Histogram
+
+\begincols
+\begincol{.5\textwidth}
+```{r, fig.height=1.9, fig.width=2.5, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in", warning=FALSE, message=FALSE}
+library(sn)
+B <- data.frame("y"=rsn(n=1000, xi=0, omega=1, alpha=50, tau=0,  dp=NULL))
+ggplot(data = B, aes(x = "", y = y)) + geom_boxplot() + 
+  xlab("") + ylab("") + geom_hline(yintercept=c(quantile(B$y,0),
+  quantile(B$y,0.5), quantile(B$y,0.75), quantile(B$y,0.25), 
+  quantile(B$y,1), mean(B$y)), color=c(rep("black", 5), "red"), linetype="dashed") + coord_flip() + ggtitle("Skewed to the right")
+```
+
+```{r, fig.height=1.87, fig.width=2.45, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in", warning=FALSE, message=FALSE}
+ggplot(data = B, aes(x = y)) + geom_histogram(binwidth=0.2, colour="black", fill="white") + xlab("") + ylab("") + geom_vline(xintercept=c(quantile(B$y,0),
+  quantile(B$y,0.5), quantile(B$y,0.75), quantile(B$y,0.25), 
+  quantile(B$y,1), mean(B$y)), color=c(rep("black", 5), "red"), linetype="dashed") +  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+\endcol
+\begincol{.5\textwidth}
+```{r, fig.height=1.9, fig.width=2.5, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in", warning=FALSE, message=FALSE}
+C <- data.frame("y"=rsn(n=1000, xi=0, omega=1, alpha=-50, tau=0,  dp=NULL))
+ggplot(data = C, aes(x = "", y = y)) + geom_boxplot() + 
+  xlab("") + ylab("") + geom_hline(yintercept=c(quantile(C$y,0),
+  quantile(C$y,0.5), quantile(C$y,0.75), quantile(C$y,0.25), 
+  quantile(C$y,1), mean(C$y)), color=c(rep("black", 5), "red"), linetype="dashed") + coord_flip()+ ggtitle("Skewed to the left")
+```
+
+```{r, fig.height=1.87, fig.width=2.45, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in", warning=FALSE, message=FALSE}
+ggplot(data = C, aes(x = y)) + geom_histogram(binwidth=0.2, colour="black", fill="white") + xlab("") + ylab("") + geom_vline(xintercept=c(quantile(C$y,0),
+quantile(C$y,0.5), quantile(C$y,0.75), quantile(C$y,0.25), quantile(C$y,1),  mean(C$y)), color=c(rep("black", 5), "red"), linetype="dashed") +  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+\endcol
+\endcols
+
+
+
+
+# IQR 
+
++ Inter-quartile range is a special case of an inter 50\% quantile distance. Let 
+\[
+x_p = \{x: F_X(x) = p \}
+\]
+and
+\[
+x_{1-p} = \{x: F_X(x) = 1-p \}
+\]
+for $1 < p < 0.5$
+
++ Then the inter $1-2p$ quantile distance is simply $x_{1-p} - x_{p}$. 
+
++ When $p = 0.25$, we recover the IQR $Q_3-Q_1= x_{0.75} - x_{0.25}$.
+
+# IQR and standard deviation
+
+Since both are measures of spread, they are closely related quantities. But for a normal random variable, the relationship is deterministic due to 
+\[
+F_X(x) = \frac{1}{2}\Big[1+\text{err}(\frac{x-\mu}{\sigma})\Big]
+\]
+
++ In the case of a symmetric normal distribution with mean centered at $\mu=0$, $F_X(x)$ reduces to a function of $\sigma$ alone. 
+
++ Note that $\text{err}$ function has an analytical form involving integration without a closed-form representation, so the relationship is usually approximated.
+
++ You can then determine the approximated relationship between $\sigma$ and IQR or more generally inter $1-2p$ quantile distance for any arbitrary $0 < p < 0.5$. 
+
+
+
+
+
+
+# A question to start today
+
+
+
+
+
+
+
+# Topics covered in this lecture
+
+\begin{itemize}
+\item Sampling
+
+\begin{itemize}
+\item Concept of a random sample
+\item Mean of random variables from a random sample
+\item Sampling distribution of the mean of random variables
+\item Sampling from a normal distribution
+\end{itemize}
+
+\item Parameters
+
+\begin{itemize}
+\item Finding estimators for a parameter
+
+\begin{itemize}
+\item Method of moments estimators
+\item Maximum likelihood estimators
+\end{itemize}
+
+\item Evaluating estimators 
+\begin{itemize}
+\item Consistency
+\item Unbiasedness
+\item Robustness
+\end{itemize}
+
+\item Using bootstrap methods to estimate parameters
+
+\begin{itemize}
+\item parametric bootstrap
+\item nonparametric bootstrap
+\end{itemize}
+
+\end{itemize}
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+---- 
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{Concept of a random sample}
+}
+\end{center}
+
+
+
+# A formal definition of random sample
+
+A collection of random variables (r.v.) $X_1,\dots, X_n$ are a *random sample* of size $n$ from the *population* if $X_1, \dots, X_n$  
+  
+\begin{itemize}
+\item are mutually independent
+\item have the same distribution (either p.d.f or p.m.f)
+\end{itemize}
+  
+You can also say a random sample of r.v.s $X_1,\dots, X_n$ are independent and identically distributed (iid in short) with probability function $f_X(x)$.
+
+\[
+f_{\mathbf{X}}(x_1,\dots,x_n) = f_X(x_1)\cdots f_X(x_n) = \Pi_{i=1}^n f_X(x_i)
+\]
+
+
+# what about a random sample from a known parametric family?
+
++ Suppose the random sample comes from a known parametric family with unknown parameter $\theta$ (could either be a real value or a vector), e.g. 
+
+    - normal distribution $\theta = (\mu, \sigma)$
+    - t-distribution $\theta = k$, the degrees of freedom
+    - binomial or Bernoulli distribution $\theta = p$, the probability of a positive outcome
+  
++ By considering different values of $\theta$, we can observe how a random sample behave for different populations.
+
+\[
+f_{\mathbf{X}}(x_1,\dots,x_n|\theta) = \Pi_{i=1}^n f_X(x_i|\theta)
+\]
+
+
+
+# How to obtain a random sample?
+
+To obtain a truly random sample $(x_1, \dots, x_n)$, we have to sample from an \textbf{infinite} population $(x_1, \dots, x_N, \dots)$
+
+For a \textbf{finite} population (e.g. $(x_1, \dots, x_N)$, where $n < N < \infty$), we need to \textit{sample with replacement} 
+
+\begin{itemize}
+\item after each draw, the same value is replaced in the population
+\item this way, each $x_i$ ($i=1,\dots, n$) has exactly probability $\frac{1}{N}$ of being drawn
+\item we must have $\text{P}(X_2 = y | X_1 = y) = \frac{1}{N} = \text{P}(X_2 = y)$ 
+\item and $\text{P}(X_2 = y' | X_1 = y) = \frac{1}{N}$
+\item the probability of drawing a sample is $\frac{1}{N^n}$
+\end{itemize}
+
+
+# How to obtain a random sample? (cont'd)
+
+On the other hand, *sampling without replacement* refers to the drawing process 
+
+\begin{itemize}
+\item where after each value is taken, the choice of this particular value becomes unavailable for the next draws. 
+\item we must have $\text{P}(X_2 = y | X_1 = y) = 0 \ne \text{P}(X_2 = y)  = \frac{1}{N}$ 
+\item and $\text{P}(X_2 = y' | X_1 = y) = \frac{1}{N-1}$ where ($y\ne y'$)
+\item it is clear the probability of drawing a sample is $\frac{1}{N}\frac{1}{N-1}\dots\frac{1}{N-n+1}$
+\item a sample resulted from \textit{sampling without replacement} thus does not satisfy the condition of being a random sample (especially if $n < N$ and not $n << N$)
+\end{itemize}
+
+However, notice the marginal distribution $f_{X_i}(x)$ of $X_i$ from *sampling with replacement* (gives a **random sample**) and *sampling without replacement* (does **not** result in a random sample) is the same for $i=1, \dots, n$. 
+
+
+
+
+# An example
+
+Suppose we take a random sample of 10 values from the finite population $\{1, \dots, 1000\}$  **with replacement**, what is the probability that all sample values are greater than 200?
+  
+  
+In this case the samples are mutually independent and we can calculate the exact probability to be:
+
+\[
+\text{P}(X_1>200, \dots, X_{10} > 200) = \Pi_{i=1}^{10}\text{P}(X_i>200) = \Big(\frac{800}{1000}\Big)^{10} \sim 0.107
+\]
+
+
+
+# An example (cont'd)
+
+Suppose we take a random sample of 10 values from the finite population $\{1, \dots, 1000\}$  **without replacement**, what is the probability that all sample values are greater than 200?
+  
+  
+In this case the samples are not mutually independent, but this can be translated to a problem of counting the number of samples greater than 200. 
+  
+  
+Let $Y$ be the number of samples greater than 200, and it has a hypergeometric distribution\footnote{probability of $k = 10$ successes (random draws for which the object drawn has a specified feature, being greater than 200) in $n=10$ draws, \textbf{without replacement}, from a finite population of size $N=1000$ that contains exactly $K=800$ objects with that feature, wherein each draw is either a success or a failure.}:
+
+\[
+\text{P}(X_1>200, \dots, X_{10} > 200) = \text{P}(Y=10) = \frac{\binom{800}{10}\binom{200}{0}}{\binom{1000}{10}} = 0.106
+\]
+
+
+# reflection
+
++ Suppose the finite population is $\{1, \dots, 100\}$, repeat the calculation. Are the two probabilities different?
+
++ Suppose the finite population remains the same $\{1, \dots, 1000\}$, but we are taking 100 samples, repeat the calculation. Are the two probabilities different now?
+
++ What do you conclude from these calculations?
+
+
+---- 
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{Mean of random variables from a random sample}
+}
+\end{center}
+
+
+# A formal definition of a statistic
+
+Given a sample $X_1, \dots, X_n$, a well-defined statistic is expressed as a function of the sample $T(X_1, \dots, X_n)$. 
+
++ The function $T$ can be real-valued or a vector
+
++ The statistic itself is a random variable $Y = T(X_1, \dots, X_n)$
+
++ In some cases, the distribution of $Y$ is tractable
+
+ <br>
+ 
+The distribution of $Y$ is derived from the distribution of a sample $X_1, \dots, X_n$ and thus also called the **sampling distribution** of $Y$.
+ 
+ <br>
+ 
+Generally speaking, the definition of a statistic can be almost anything, but it **cannot** be a function of the (unknown or known) parameter $\theta$.
+
+
+# Sample mean of random variables
+
+Let $X_1, \dots, X_n$ be a random sample from a population with mean $\mu$ and variance $\sigma^2 < \infty$. Define $T(X_1, \dots, X_n) = \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$ and $T(X_1, \dots, X_n) = S^2 = \frac{1}{n-1}\Big[\sum_{i=1}^n X_i^2-n\bar{X}^2\Big]$. Show 
+
+a) $\text{E}(\bar{X}) = \mu$
+
+b) $\text{Var}(\bar{X}) = \frac{\sigma^2}{n}$
+
+c) $\text{E}(S^2) = \sigma^2$
+
+
+Try to work these out.
+
+
+# Proof of a)
+
+\begin{align}
+\text{E}(\bar{X}) & = \text{E}(\frac{1}{n}\sum_{i=1}^n X_i) \\
+& = \frac{1}{n} \text{E}(\sum_{i=1}^n X_i) \\
+& = \frac{1}{n} \sum_{i=1}^n  \text{E}(X_i) \\
+& = \frac{1}{n} n\text{E}(X_i) \\
+& = \mu  \qed
+\end{align}
+
+# Proof of b)
+
+\begin{align}
+\text{Var}(\bar{X}) & = \text{Var}(\frac{1}{n}\sum_{i=1}^n X_i) \\
+& = \frac{1}{n^2} \text{Var}(\sum_{i=1}^n X_i) \\
+& = \frac{1}{n^2} \sum_{i=1}^n  \text{Var}(X_i) \\
+& = \frac{1}{n} \text{Var}(X_i) \\
+& = \frac{\sigma^2}{n}  \qed
+\end{align}
+
+
+
+# Before c), remember the following from STA247
+
+Here we used the following relationship between the mean and variance:
+
+\[
+\text{Var}(X_i) = \text{E}[(X_i-\mu)^2] = \text{E}[X_i^2-2\mu X_i + \mu^2] =\text{E}(X_i^2) - \mu^2
+\]
+similarly
+\[
+\text{Var}(\bar{X}) = \text{E}(\bar{X}^2) - E(\bar{X})^2 = \text{E}(\bar{X}^2) - \mu^2
+\]
+
+
+# Proof of c) 
+
+\begin{align}
+\text{E}(S^2) & = \text{E}\Big(\frac{1}{n-1}\Big[\sum_{i=1}^n X_i^2-n\bar{X}^2\Big]\Big) \\
+& = \frac{1}{n-1} \text{E}\Big[\sum_{i=1}^n X_i^2 - n\bar{X}^2\Big] \\
+& = \frac{1}{n-1} \Big[n\text{E}(X_i^2) - n\text{E}(\bar{X}^2) \Big]\\
+& = \frac{n}{n-1} \Big[\text{E}(X_i^2) - \text{E}(\bar{X}^2) \Big]\\
+& = \frac{n}{n-1} \Big[\text{Var}(X_i) + \text{E}(X_i)^2 - \text{Var}(\bar{X}) -  E(\bar{X})^2 \Big]\\
+& = \frac{n}{n-1} \Big[\sigma^2 + \mu^2 - \frac{\sigma^2}{n} - \mu^2 \Big]\\
+& = \frac{n}{n-1} \Big[\sigma^2 - \frac{\sigma^2}{n}\Big]\\
+& = \sigma^2  \qed
+\end{align}
+
+
+
+
+
+
+
+---- 
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{Sampling distribution of the mean of random variables}
+}
+\end{center}
+
+
+# Sampling distribution of the mean of random variables
+
+Let $X_1, \dots, X_n$ be iid random variables with $\text{E}(X_i) = \mu$ and $\text{Var}(X_i) = \sigma^2 < \infty$. Define $\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i$. Then for every $\epsilon>0$,
+
++ Strong law of large number (SLLN): 
+\[
+\text{P}(\lim_{n\to \infty}|\bar{X}_n - \mu| < \epsilon) = 1
+\]
+
++ Weak law of large number (WLLN):
+
+\[
+\lim_{n\to \infty}\text{P}(|\bar{X}_n - \mu| < \epsilon) = 1
+\]
+
++ Central limit theorem (CLT):
+
+<br/> as $n \to \infty$,   
+\[
+\sqrt{n}(\bar{X_{n}}-\mu ){\xrightarrow {d}}\ N(0,\sigma^{2})
+\]
+
+
+# What you need to know
+
+A rigourious treatment of the theory to derive the sampling distribution of $\bar{X}$ is beyond the scope of this course. But you should be able to use the above to justiy yourself in practice.
+
++ SLLN is a stronger result than WLLN; SLLN implies WLLN, but not vice versa.
+
++ SLLN says that with large enough $n$, the sample mean of random variables with finite variance (can be relaxed to finite expectation) converges **almost surely** (with probability 1) to a constant (or $\mu$). 
+
++ WLLN says that with large enough $n$, **the probability** of the sample mean of random variables with finite variance being really close to a constant (or $\mu$) **converges to 1**. 
+
++ CLT states that with large enough $n$, the distribution of sample mean of random variables with finite variance is approximately normal.
+
+
+# An example
+
+A random sample from $\text{Poi}(\lambda=5)$, with sample size at $n =100, 1000,$ and $10000$. 
+
+```{r, echo=F, message=F, warning=F}
+library(plyr)
+x_bar_100 <- replicate(1000, mean(rpois(100, 5)))
+x_bar_1000 <- replicate(1000, mean(rpois(1000, 5)))
+x_bar_10000 <- replicate(1000, mean(rpois(10000, 5)))
+plot_main <- data.frame("sample_n" = c(rep(100, 1000), rep(1000, 1000), rep(10000, 1000)), "values" = c(x_bar_100, x_bar_1000, x_bar_10000))
+cdat <- ddply(plot_main, "sample_n", summarise, rating.mean=mean(values))
+
+grid <- with(plot_main, seq(min(values), max(values), length = 100))
+normaldens <- ddply(plot_main, "sample_n", function(df) {
+  data.frame( 
+    values = grid,
+    normal_curve = dnorm(grid, mean(df$values), sd(df$values)) * length(df$values) * 0.01
+  )
+})
+
+ggplot(plot_main, aes(values))  + 
+  geom_histogram(breaks = seq(4,6, 0.01), colour = "black", fill = "white") + 
+  geom_line(aes(y = normal_curve), data = normaldens, colour = "red") +
+  facet_wrap(~ sample_n)
+```
+
+
+# Central limit theorem (how big should $n$ be?)
+
+```{r  out.width = "90%", echo=F}
+include_graphics("clt_approx.png")
+``` 
+\footnote{OpenIntro, page 195}
+
+
+
+
+
+
+
+---- 
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{Sampling from a normal distribution}
+}
+\end{center}
+
+
+# Some theoretical results
+
+Let $X_1, \dots, X_n$ be a random sample from $\mathcal{N}(\mu, \sigma^2)$. Define two statistics $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$ and $S^2 = \frac{1}{n-1}\Big[\sum_{i=1}^n X_i^2-n\bar{X}^2\Big]$. Show that
+
+a) $\bar{X}$ and $S^2$ are independent (not tested)
+
+b) $\bar{X} \sim \mathcal{N}(\mu, \frac{\sigma^2}{n})$
+
+c) $(n-1)S^2/\sigma^2$ has a chi-squared distribution with $n-1$ degrees of freedom ($\chi^2(n-1)$) (not tested)
+
+
+
+
+
+# Sketch Proof of a). 
+
+The proof can be completed in three steps, 
+
+1) show that $S^2$ can be expressed as a function only of $(X_2-\bar{X}, \dots, X_n-\bar{X})$
+
+2) show that $\bar{X}$ is independent of $(X_2-\bar{X}, \dots, X_n-\bar{X})$ by writing out the joint p.d.f as a product of the joint p.d.f of $(X_2-\bar{X}, \dots, X_n-\bar{X})$ and p.d.f of $\bar{X}$.
+
+3) conclude from the fact that if two random variables are independent, then so are any measurable function of them. 
+
+<br/>
+
+You only need to be able to show 1), but you should be able to show 2) from STA247 (remember how to make a linear transformation with Jacobian). 3) is beyond the scope of this course. 
+
+
+# Proof of a) Step 1)
+
+Hint: 
+\[
+\sum_{i=1}^n(X_i -\bar{X}) = 0
+\]
+
+and expressed 
+
+\begin{align}
+S^2 &= \frac{1}{n-1}\Big[\sum_{i=1}^n X_i^2-n\bar{X}^2\Big]\\
+& = \frac{1}{n-1}\Big[\sum_{i=1}^n (X_i-\bar{X})^2 \Big]
+\end{align}
+
+as a sum of two things.
+
+
+
+
+
+# Proof of b). 
+
+Calculate the moment generating function (STA247) of $\bar{X}$ and compare with the m.g.f of a normal random variable to conclude it is indeed normal with mean $\mu$ and variance $\frac{\sigma^2}{n}$.
+
+
+
+
+# Proof of b). (Cont'd)
+
+Recall definition of a moment generating function:
+
+\begin{align}
+M_{\bar{X}}(t) &= \text{E}(e^{t\bar{X}}) \\
+& = \text{E}(e^{t\frac{1}{n}\sum_{i=1}^n X_i})\\
+& = \text{E}(\Pi_{i=1}^n e^{t\frac{1}{n} X_i}) \\
+& = \Pi_{i=1}^n \text{E}(e^{t\frac{1}{n} X_i}) \\
+& = \Pi_{i=1}^n (e^{t\mu/n + 1/(2)\sigma^2(t/n)^2}) \\
+& = (e^{t\mu/n + 1/(2)\sigma^2(t/n)^2})^n \\
+& = e^{t\mu + 1/(2n)\sigma^2t^2}
+\end{align}
+
+
+
+
+
+# Proof of c).
+
+\begin{align}
+(n-1)S^2/\sigma^2 & = \sum_{i=1}^n (X_i-\bar{X})^2/\sigma^2 \\
+& = \sum_{i=1}^n (X_i-\mu)^2/\sigma^2 - n(\bar{X}-\mu)^2/\sigma^2
+\end{align}
+
++ Given that the $\frac{X_i-\mu}{\sigma} \sim \mathcal{N}(0,1)$, we can show by m.g.f or a direct change of variable that $\Big(\frac{X_i-\mu}{\sigma}\Big)^2 \sim \chi^2(1)$ (this applies to $n(\bar{X}-\mu)^2/\sigma^2$ as well) 
+
++ And the fact that the sum of independent chi-squared random variables still follow a chi-squared distribution with d.f. to be the sum of individual d.f's. We have $\sum_{i=1}^n (X_i-\mu)^2/\sigma^2 \sim \chi^2(n)$
+
++ Combining the two, we have the result $(n-1)S^2/\sigma^2 \sim \chi^2(n-1)$
+
+
+
+
+
+
+# An example 
+
++ From b) of the theorem above, we know that 
+
+\[
+\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1)
+\]
+
++ But what about when the variance is unknown? 
+
+\[
+\frac{\bar{X} - \mu}{S/\sqrt{n}}
+\]
+
+
+# An example (cont'd) 
+
+Deriving the sampling distribution of $T = \frac{\bar{X} - \mu}{S/\sqrt{n}}$.
+
++ We first construct this statistic to be a ratio of two statistics:
+$\frac{\bar{X} - \mu}{S/\sqrt{n}} = \frac{(\bar{X} - \mu)(\sigma/\sqrt{n})}{\sqrt{S^2/n^2}}$
+
++ Notice the top one follows standard normal and the bottom is $\sqrt{\chi^2_{n-1}/(n-1)}$.
+
++ As we have shown in a) that these two are independent, we can thus derive the distribution by looking at the joint distribution of the two components.
+
++ The result you need to know is that $\frac{\bar{X} - \mu}{S/\sqrt{n}}$ follows a student's t-distribution with degrees of freedom $k=n-1$, or $T\sim t_k$
+
+\[
+f_(T)(t|k) = \frac{\Gamma\Big(\frac{k+1}{2}\Big)}{\Gamma\Big(\frac{k}{2}\Big)} \frac{1}{(k\pi)^{1/2}}\frac{1}{(1+t^2/k)^\frac{k+1}{2}},\text{       } -\infty < t < \infty 
+\]
+
+
+
+
+
+---- 
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{Finding estimators for a parameter}
+}
+\end{center}
+\begin{itemize}
+\item Method of moments
+\item Maximum likelihood (principles of data reduction)
+\item Bayes estimators (will not be on the test)
+\end{itemize}
+
+
+
+
+
+
+
+
+# What is an estimator and an estimate? 
+
++ Recall that a statistic is defined as $T(X_1, \dots, X_n)$
+
++ An "estimator" or "point estimate" is a statistic used to infer the value of an unknown parameter (so it is always used in reference to a parameter) 
+
+  - Notation: $\hat{\theta}_n = \hat{\theta}(\mathbf{X}) = T(X_1, \dots, X_n)$.  
+  - For example, $\bar{X}$ is an estimator of $\mu$.
+
++ An "estimate" is simply the realized value of the estimator, i.e. the estimator (or statistic) evaluated at the actual sample values $(x_1, \dots, x_n)$.
+  - Notation: $\hat{\theta}(\mathbf{x}) = t(x_1, \dots, x_n)$.  
+  - For example, $\bar{x}$ is an estimate of $\mu$.
+
+
+# How do we find estimators?
+
++ In many cases the choice is intuitive, for example, sample mean is a reasonable estimate of the population mean. 
+
++ In situation when it's less clear, we need more principled approaches to find estimators.
+
++ Remember, the estimates contain information about the sample while the parameters contain information about the population. 
+
++ We need to bridge these two using rigorious statistical methods.
+
+
+
+
+
+# Method of moments 
+
+
+Let $X_1,  \dots, X_n$ be an iid sample from a population with some probability function (p.d.f or p.m.f). Then we can compute the first $k$ sample moments and equate them to each of the first $k$ population moments to find estimators:
+
+\[
+m_1 = \frac{1}{n}\sum_{i=1}^n X_i; \text{     }\text{     } \mu_1(\theta) = E(X)
+\]
+\[
+\vdots
+\]
+\[
+m_k = \frac{1}{n}\sum_{i=1}^n X_i^{k}; \text{     }\text{     } \mu_k(\theta) = E(X^{k})
+\]
+
+The estimators are found by solving these equations simultaneously. 
+
+
+# An example of a normal random sample
+
+Suppose an iid sample $X_1, \dots, X_n \sim \mathcal{N}(\mu, \sigma^2)$, we know the first two sample moments 
+\[
+m_1 = \bar{X}
+\]
+and 
+\[
+m_2 = \frac{1}{n}\sum_{i=1}^n X_i^2
+\]
+while the population moments
+\[
+E(X) = \mu
+\]
+and 
+\[
+E(X^2) = \sigma^2 + \mu^2
+\]
+
+Thus, the method of moments estimators are $\hat{\mu} = \bar{X}$ and $\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n X_i^2 -\bar{X}^2 = \frac{1}{n}\sum_{i=1}^n (X_i-\bar{X})^2$.
+
+
+# Method of moments (pro and cons)
+
++ probably the oldest method to find estimator (credit to Karl Pearson in late 1800s)
+
++ simple to implement and always yield some estimate
+
++ estimators might not be plausible
+
++ a good starting point
+
+
+
+
+# Likelihood
+
+Let $X_1,  \dots, X_n$ be an iid sample from a population with some probability function (p.d.f or p.m.f). Define the likelihood function (a function of the parameter)
+
+\[
+L(\theta|\mathbf{x}) = L(\theta_1, \dots, \theta_k| x_1, \dots, x_n) = \Pi_{i=1}^n f(x_i|\theta)
+\]
+
++ Observe the symmetry between $L(\theta|\mathbf{x})$ and $f(\mathbf{x}|\theta)$.
+
++ The likelihood is a function of the parameter given the data ($\mathbf{x}$)
+
++ The probability is a function of the data given the parameter ($\theta$)
+
++ You can vary the values of $\theta$ such that the observed sample is most likely.
+
+
+
+# Maximum likelihood
+
+
+Define the maximum likelihood estimator (MLE) $\hat{\theta}$ to be: 
+\[
+\hat{\theta}(\mathbf{X}) = \text{argmax}_{\theta} L(\theta|\mathbf{X})
+\]
+
++ If $L(\theta|\mathbf{X})$ has a global maximum, then there is a unique $\hat{\theta}$.
+
++ Suppose $L(\theta|\mathbf{X})$ is differentiable with respect to $\theta$, we can find MLE by solving
+\[
+\frac{\partial}{\partial \theta_i} L(\theta|\mathbf{x}) = 0; \text{   } i=1, \dots, k
+\]
+
++ Then you should verify the solutions are indeed the only extreme point in the interior range of $\theta$ by checking the second derivative.
+
++ If $\theta$ is restricted to a range, you should also check the boundary points.
+
+
+# An example of a normal random sample
+
+
+Let $X_1, \dots, X_n \sim \mathcal{N}(\mu, \sigma^2)$ be iid. The likelihood is then
+
+\begin{align}
+L(\mu, \sigma^2| \mathbf{x}) &= \Pi_{i=1}^n \frac{1}{\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\\
+& = \frac{1}{\sqrt{2\pi}}e^{-\sum_{i=1}^n\frac{(x_i-\mu)^2}{2\sigma^2}}
+\end{align}
+
+\[
+\frac{\partial}{\partial \mu} L(\mu, \sigma^2| \mathbf{x}) = 2\sum_{i=1}^n\frac{(x_i-\mu)^2}{2\sigma^2} = 0 
+\]
+implies that 
+\[
+\hat{\mu} = \frac{1}{n} \sum_{i=1}^n x_i = \bar{x}
+\]
+
+# An example of a normal random sample (cont'd)
+
+On the other hand, 
+
+\[
+\frac{\partial}{\partial \sigma^2} L(\mu, \sigma^2| \mathbf{x}) = -\frac{n}{2\sigma^2} + \frac{\sum_{i=1}^n{(x_i-\mu)^2}}{2\sigma^4} = 0 
+\]
+and plugging in $\hat{\mu}$ we have 
+\[
+\hat{\sigma}^2 = \frac{\sum_{i=1}^n{(x_i-\bar{x})}}{n} = \frac{n-1}{n}S^2
+\]
+
+Check for yourself that the two second partial derivatives are negative.
+
+
+
+# A visual of the MLE (R)
+
+```{r, size = "scriptsize", echo=F, message=F, warning=F}
+A <- rnorm(5000, 5, 3); mu_list <- seq(2,8,0.001); sigma_list <- seq(0.1, 5, 0.01)
+Y <- sapply(mu_list, function(x) sum(dnorm(A, mean = x, sd = 6, log=T)))
+Z <- sapply(sigma_list, function(x) sum(dnorm(A, mean = 5, sd = x, log=T)))
+par(mfcol=c(2,1))
+plot(mu_list, Y, xlab="mu values", ylab = "log-likelihood"); abline(v = c(mu_list[which.max(Y)], 5), col=1:2)
+plot(sigma_list, Z, xlab="sigma values", ylab = "log-likelihood"); abline(v = c(sigma_list[which.max(Z)], 3), col=1:2)
+```
+
+
+# A visual of the MLE (Python)
+
+```{python, size = "scriptsize", echo=F}
+from scipy.stats import norm
+r = norm.rvs(loc = 5, scale = 3, size=5000)
+import numpy
+mu_list = numpy.arange(2,8,0.01)
+sigma_list =  numpy.arange(0.1, 5, 0.01)
+import pandas as pd
+Y = pd.Series(mu_list).apply(lambda x: sum(norm.logpdf(r, loc=x, scale=3))).values
+Z = pd.Series(sigma_list).apply(lambda x: sum(norm.logpdf(r, loc=5, scale=x))).values
+import matplotlib
+import matplotlib.pyplot as plt
+plt.figure(1)
+plt.subplot(211)
+plt.plot(mu_list, Y)
+plt.axvline(x=5)
+plt.subplot(212)
+plt.plot(sigma_list, Z)
+plt.axvline(x=3)
+plt.show()
+```
+
+
+
+
+
+
+
+
+
+---- 
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{Evaluating estimators}
+}
+\end{center}
+\begin{itemize}
+\item Unbiasedness
+\item Sufficiency
+\item Consistency
+\end{itemize}
+
+
+
+
+# Unbiasedness
+
+An estimator $\hat{\theta}$ is unbiased for the parameter $\theta$ if 
+\[
+\text{E}_{x|\theta}(\hat{\theta}) = \theta
+\]
+otherwise the difference between the two
+\[
+\text{E}_{x|\theta}(\hat{\theta}) - \theta
+\]
+is called the bias of $\hat{\theta}$ relative to $\theta$.
+
+<br/>
+
+      
+Examples of unbiased statistics: 
+
++ $\bar{X}$ is an unbiased estimator of $\mu$
++ $S^2$ (defined earlier with $1/(n-1)$) is an unbiased estimator of $\sigma^2$
+
+<br/>
+
+(Exercise: show the above).
+
+
+# A common used measure of quality: Mean squared error
+
+MSE of an estimator $\hat{\theta}$ of a parameter $\theta$ is a function of $\theta$:
+\[
+\text{E}_{X|\theta}(\hat{\theta} - \theta)^2 = \text{Var}_{X|\theta}(\hat{\theta}) + (\text{E}_{X|\theta}\hat{\theta}-\theta)^2 = \text{Var}_{X|\theta}(\hat{\theta}) + (\text{Bias})^2
+\]
+
++ both variability of the estimator (precision) and the bias (accuracy) play a role in the mean squared error
+
++ analytically tractable 
+
++ A good estimator should have both small - clearly unbiased estimator has some advantage in terms of accuracy.
+
+
+# Exercise
+
+For iid $X_1, \dots, X_n \sim \mathcal{N}(\mu, \sigma^2)$, find the MSE of the unbiased estimator $\bar{X}$ and $S^2$. 
+
+<br/>
+  
+Know how to get to these results:
+
+\[
+\text{E}(\bar{X} - \mu)^2 = \frac{\sigma^2}{n}
+\]
+and
+\[
+\text{E}(S^2 - \sigma^2)^2 = \frac{2\sigma^4}{n-1}
+\]
+
+
+# Sufficiency
+
+A statistic $T(\mathbf{X})$ is sufficient for $\theta$ if the conditional probability distribution of $\mathbf{X}$ does not depend on $\theta$ given knowledge of $T(\mathbf{X})$.
+
++ The idea of sufficiency arise from the idea that the statistic contains all information about $\theta$ in this sample
+
++ Factorization theorem: Given the probability function is $f_{X|\theta}(x)$, $T(X)$ is sufficient for $\theta$ if and only if there exists non-negative functions $g$ and $h$ such that 
+\[
+f_{X|\theta}(x) = h(x)g_{\theta}(T(x))
+\]
+
+
++ You should be able to show for the normal case with known variance parameter $\sigma^2$, $\bar{X}$ is sufficient for $\mu$.
+
+
+# Consistency
+
+Consider the estimators $\hat{\theta}_n$, consistency refers to the property concerning when $n\to \infty$. 
+
+<br/>
+
+  
+A sequence of estimators $\hat{\theta}_n$ is consistent for parameter $\theta$, if for every $\epsilon > 0$
+\[
+\lim_{n\to \infty}\text{P}(|\hat{\theta}_n - \theta| < \epsilon) = 1.
+\]
+
++ Consistency means that as sample size approaches infinity, the estimator eventually will be close to the parameter with high probability (not probability 1, so this is weak - as in the WLLN).
+
++ This is different from the previous properties that were restricted to finite samples
+
+
+# Connection between consistency and unbiasedness
+
+Chebyshev's inequality (STA247):
+
+\[
+\text{P}(|\hat{\theta}_n - \theta| > \epsilon) \le \frac{\text{E}_{X|\theta}(\hat{\theta}_n - \theta)^2}{\epsilon^2} = \frac{\text{Var}_{X|\theta}(\hat{\theta}_n)}{\epsilon^2} + \frac{\text{Bias}^2}{\epsilon^2}
+\]
+
++ Thus, if $\hat{\theta}_n$ is unbiased, then as $\lim_{n\to\infty}\text{Var}_{X|\theta}(\hat{\theta}_n) = 0$, $\hat{\theta}_n$ is also consistent.
+
+
++ You should know that the MLEs are consistent estimators (no need to show).
+
+
+
+
+
+
+
+<!-- # code example -->
+<!-- ```{r, collapse=TRUE, size='small', width=50} -->
+<!-- rnorm(10) -->
+<!--```-->
+
+
+
+<!-- ----  -->
+<!-- <!-- add new slide without header --> -->
+<!-- \begin{center} -->
+<!-- \textcolor{blue}{  -->
+<!--     \Large{Using sampling to estimate parameters} -->
+<!-- } -->
+<!-- \end{center} -->
+
+
+<!-- # Two Column Layout -->
+<!-- \begincols -->
+<!--   \begincol{.48\textwidth} -->
+<!-- This slide has two columns. -->
+<!--   \endcol -->
+<!-- \begincol{.48\textwidth} -->
+<!-- ```{r pressure} -->
+<!-- plot(pressure) -->
+<!-- ``` -->
+<!--   \endcol -->
+<!-- \endcols -->
+
+<!--  ```{r  out.width = "80%", echo=F} -->
+<!--  include_graphics("fig261.pdf")  -->
+<!--  ``` -->
+
+
+<!--```{r, fig.height=3, fig.width=4, highlight=FALSE}
+ggplot(data = Cars93, aes(x = "", y = Fuel.tank.capacity)) + 
+  geom_boxplot() + xlab("") + ylab("capacity in US gallons") + 
+  ggtitle(paste("Fuel tank capacity"))  
+#boxplot(Cars93$Fuel.tank.capacity, main = "Fuel tank capacity", ylab = "capacity in US gallons")
+``` -->
+
+
+<!-- ```{r, fig.width=3, fig.height=3, cache=TRUE} -->
+<!-- library(ggplot2) -->
+<!-- ggplot(data=Cars93, aes(x=Rev.per.mile)) + -->
+<!--   geom_histogram(binwidth=100, colour="black", fill="white") +  -->
+<!--   xlab("Engine revolutions per mile")  +  -->
+<!--   ggtitle("Engine revolutions \n per mile (in highest gear).") -->
+<!-- mean(Cars93$Rev.per.mile); median(Cars93$Rev.per.mile) -->
+<!-- ``` -->

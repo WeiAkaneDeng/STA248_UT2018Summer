@@ -10,6 +10,7 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 + [Wei Q. Deng](wei.deng@mail.utoronto.ca)
 + Office: Steward building 103A (149 College Street)
 + Office hours: Monday 4-6pm, Wednesday 4-6pm (from second week)
++ **Office hour location**: SS623B (TA office in the basement of Sidney Smith - starting July 9th)
 
 ### Class schedule
 + Monday 18:00-21:00 in SS 2118 (no lecture on Monday, August 6 (Civic holiday))
@@ -25,6 +26,11 @@ You can take a look at [DataCamp](https://www.datacamp.com). Information on prog
 
 ### Lecture Slides
 
-- [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.pdf) and the car [dataset](https://weiakanedeng.github.io/STA248_UT2018Summer/Cars93.csv). The rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.Rmd) for you to look at the code chunks.
+- [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.Rmd) for you to look at the code chunks. 
+
+To practice what you learnt in Lecture 1, you can explore the car [dataset](https://weiakanedeng.github.io/STA248_UT2018Summer/Cars93.csv) (data description [here](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/Cars93.html)). For each variable, generate what you think is the best graphical and numerical summaries. You should be able to defend your choice using the material from the lecture slides.
+
+
+- [lecture 2 slides prior to class](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture2.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture2.Rmd) for you to look at the R/Python code chunks. 
 
 
