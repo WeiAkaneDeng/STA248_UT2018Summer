@@ -1022,7 +1022,7 @@ Chebyshev's inequality (STA247):
 
 
 <!-- ----  -->
-<!-- <!-- add new slide without header --> -->
+<!-- <!-- add new slide without header -->
 <!-- \begin{center} -->
 <!-- \textcolor{blue}{  -->
 <!--     \Large{Using sampling to estimate parameters} -->
