@@ -172,7 +172,7 @@ and
 \[
 x_{1-p} = \{x: F_X(x) = 1-p \}
 \]
-for $1 < p < 0.5$
+for $0 < p < 0.5$
 
 + Then the inter $1-2p$ quantile distance is simply $x_{1-p} - x_{p}$. 
 
@@ -569,11 +569,10 @@ The proof can be completed in three steps,
 
 2) show that $\bar{X}$ is independent of $(X_2-\bar{X}, \dots, X_n-\bar{X})$ by writing out the joint p.d.f as a product of the joint p.d.f of $(X_2-\bar{X}, \dots, X_n-\bar{X})$ and p.d.f of $\bar{X}$.
 
-3) conclude from the fact that if two random variables are independent, then so are any measurable function of them. 
+3) conclude from the fact that if two random variables are independent, then so are any measurable functions of them. 
 
-<br/>
 
-You only need to be able to show 1), but you should be able to show 2) from STA247 (remember how to make a linear transformation with Jacobian). 3) is beyond the scope of this course. 
+You only need to be able to show 1), but you should be able to show 2) from STA247 (remember how to do change of variables). 3) is beyond the scope of this course. 
 
 
 # Proof of a) Step 1)
@@ -668,7 +667,7 @@ $\frac{\bar{X} - \mu}{S/\sqrt{n}} = \frac{(\bar{X} - \mu)(\sigma/\sqrt{n})}{\sqr
 + The result you need to know is that $\frac{\bar{X} - \mu}{S/\sqrt{n}}$ follows a student's t-distribution with degrees of freedom $k=n-1$, or $T\sim t_k$
 
 \[
-f_(T)(t|k) = \frac{\Gamma\Big(\frac{k+1}{2}\Big)}{\Gamma\Big(\frac{k}{2}\Big)} \frac{1}{(k\pi)^{1/2}}\frac{1}{(1+t^2/k)^\frac{k+1}{2}},\text{       } -\infty < t < \infty 
+f_{T}(t|k) = \frac{\Gamma\Big(\frac{k+1}{2}\Big)}{\Gamma\Big(\frac{k}{2}\Big)} \frac{1}{(k\pi)^{1/2}}\frac{1}{(1+t^2/k)^\frac{k+1}{2}},\text{       } -\infty < t < \infty 
 \]
 
 

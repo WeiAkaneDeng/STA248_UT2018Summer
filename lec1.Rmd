@@ -735,7 +735,7 @@ Typically used when we care more about the tails of the data.
 
 Let $\mathrm{x}$ be a standard normally distributed random variable, i.e. $\mathrm{x} \sim \mathcal{N}(0,1)$. 
 
-We want to find out what the first quantile is by solving the following:
+We want to find out what the first quartile is by solving the following:
 \[
 Pr(\mathrm{x} < a) = Pr(\frac{\mathrm{x}-\mu}{\sigma} < \frac{a-\mu}{\sigma}) = 0.25
 \]
