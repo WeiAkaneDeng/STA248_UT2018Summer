@@ -19,6 +19,46 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 + Date: **July 23rd**
 
 
+
+
+### Lecture Slides
+
+
+    
++ [lecture 3](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture3.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture3.Rmd) for you to look at the R/Python code chunks. 
+
+    - Relevant readings from OpenIntro are Chapter 4, specifically 4.1-4.3, and 4.5; alternatively you can look at Chapter 7, 8, 9 of *Probability and Statistics for Engineering and the Sciences*.
+
+
++ [lecture 2](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture2.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture2.Rmd) for you to look at the R/Python code chunks. 
+
+    - To practice what you learnt, make sure you know each of the concepts introduced as well as being able to solve the examples and exercises on the lecture slides. 
+    - Relevant readings from *OpenIntro* are Chapter 2, 3 (review for STA247) and 4.4; alternatively you can look at Chapter 2-4 (review for ST247) and Chapter 5 and 6 of *Probability and Statistics for Engineering and the Sciences*.
+    - You can also refer to your slides or textbook from STA247 if you need a refresher on concepts such as expectation, variance and moment generating functions.
+    
+    
+    
++ [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.Rmd) for you to look at the code chunks. 
+
+    - To practice what you learnt in Lecture 1, you can explore the car [dataset](https://weiakanedeng.github.io/STA248_UT2018Summer/Cars93.csv) (data description [here](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/Cars93.html)). For each variable, generate what you think is the best graphical and numerical summaries. You should be able to defend your choices using the material from the lecture slides.
+    - Relevant reading material from the *OpenIntro* Chapter 1; alternatively you can look at Chapter 1 of *Probability and Statistics for Engineering and the Sciences*.
+
+
+### R and Python programming resources
+
++ R
+
+    - [R cookbook](http://www.cookbook-r.com)
+    - [R intro from Cran](https://cran.r-project.org/doc/manuals/R-intro.pdf)
+    - [Quick R](https://www.statmethods.net/index.html)
+
++ Python
+
+    - [statistical analyses](http://scikit-learn.org/stable/auto_examples/index.html)
+    - [pydataframe](https://code.google.com/archive/p/pydataframe/)
+    - [NumPy](http://scipy.org/Cookbook) and [Scipy](http://www.scipy-lectures.org)
+
+
 ### DataCamp 
 
 You can take a look at [DataCamp](https://www.datacamp.com). The invitation link has been sent out, if you have not received, please let me know. 
@@ -39,27 +79,4 @@ I have added additional modules that you might find helpful to get you started, 
 
 The deadline for the completion of two modules is set for **August 5th**.
 
-
-
-### Lecture Slides
-
-
-    
-+ lecture 3 slides will be posted after class
-
-    - Relevant readings from OpenIntro are Chapter 4, specifically 4.1-4.3, and 4.5
-
-
-+ [lecture 2](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture2.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture2.Rmd) for you to look at the R/Python code chunks. 
-
-    - To practice what you learnt, make sure you know each of the concepts introduced as well as being able to solve the examples and exercises on the lecture slides. 
-    - Relevant readings from OpenIntro are Chapter 2, 3 (review for STA247) and 4.4
-    - You can also refer to your slides or textbook from STA247 if you need a refresher on concepts such as expectation, variance and moment generating functions.
-    
-    
-    
-+ [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.Rmd) for you to look at the code chunks. 
-
-    - To practice what you learnt in Lecture 1, you can explore the car [dataset](https://weiakanedeng.github.io/STA248_UT2018Summer/Cars93.csv) (data description [here](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/Cars93.html)). For each variable, generate what you think is the best graphical and numerical summaries. You should be able to defend your choices using the material from the lecture slides.
-    - Relevant reading material from the OpenIntro Chapter 1
 

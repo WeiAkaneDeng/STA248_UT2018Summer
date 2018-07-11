@@ -1,0 +1,1007 @@
+---
+title: "Point estimates and interval estimates"
+author: "Wei Q. Deng"
+date: "July 11th 2018"
+output:
+  beamer_presentation:
+    includes:     
+      in_header: wei-beamer-header-simple.txt
+    incremental: no
+  ioslides_presentation:
+    incremental: yes
+  slidy_presentation:
+    incremental: yes
+subtitle: (Week 02 lecture notes)
+fontsize: 10pt
+---
+
+
+
+```{r, setup, include=FALSE}
+require(mosaic)   # Load additional packages here
+library(knitr)
+library(reticulate)
+library(ggplot2)
+library(MASS)
+library(dplyr)
+use_python("/usr/local/bin/python")
+py_config()
+use_virtualenv("r-reticulate")
+knitr::knit_engines$set(python = reticulate::eng_python)
+py_available(TRUE)
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+trellis.par.set(theme=theme.mosaic()) # change default color scheme for lattice
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="tiny")   # slightly smaller font for code
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+```
+
+
+# Review of assumed topics from STA247
+
+Expectation and variance are functions of the parameters alone - thus they are constants!
+
+\begin{itemize}
+
+\item Expectation: the expected value of a random variable under the law of its probability distribution; computed as a weighted (by probability mass/density) average: 
+\[
+\text{E}(X) = \sum_i x_i\text{P}(X=x_i)
+\]
+or
+\[
+\text{E}(X) = \int x f_X(x)\mathrm{d}_x
+\]
+\item Variance: the expected variability of a random variable in reference to its expected value:
+\[
+\text{Var}(X) = \sum_i (x_i-\text{E}(X))^2\text{P}(X=x_i)
+\]
+ or 
+\[
+\text{Var}(X) = \int (x_i-\text{E}(X))^2f_X(x)\mathrm{d}_x
+\]
+\end{itemize}
+
+
+# Review of assumed topics from STA247 (cont'd)
+
+You can simply the above to: 
+\begin{align}
+\text{Var}(X) & = \text{E}[(X-E(X))^2] =\text{E}[X^2-2X\text{E}(X)+\text{E}(X)^2]\\
+& = \text{E}(X^2)-2\text{E}(X)\text{E}(X) + \text{E}(X)^2 =
+\text{E}(X^2)-\text{E}(X)^2
+\end{align}
+
+
+\begin{itemize}
+
+\item Moment generating function: a mathematical convenience to provide an alternative way as supposed to working with p.d.f or p.m.f directly; a real-valued function of $t$ 
+\[
+\text{M}_X(t) = \text{E}(e^{tX});  \text{  } t\in\mathrm{R}
+\]
+
+\item From m.g.f to all moments: if we differentiate $\text{M}_X(t)$ w.r.t $t$ to the $k$th order, and set $t=0$, we recover the $k$th moment. 
+
+\[
+m_k = \text{E}(X^k) = \text{M}_X^{(k)}(0) = \frac{d^k \text{M}_X}{dt^k}|_{t=0}
+\]
+
+\end{itemize}
+
+
+# Review material practice
+
++ Derive the first two moments for 1) a normal random variable; 2) binomial random variable; 3) Poisson random variable
+
++ Know the following (lower case are constants):
+
+    - $\text{E}(a) = a$
+    - $\text{E}(\text{E}(X)) = \text{E}(X)$
+    - $\text{E}(\sum_{i=1}^nX_i) = \sum_{i=1}^n \text{E}(X_i)$
+    - $\text{E}(aX) = a\text{E}(X)$
+    - $\text{Var}(X) = \text{E}(X^2) - \text{E}(X)^2$
+    - $\text{Var}(aX) = a^2\text{Var}(X)$
+    - $\text{Var}(a) = 0$
+    - $\text{Var}(\text{Var}(X)) = 0$
+    - $\text{Var}(X+Y) = \text{Var}(X)+\text{Var}(Y) + 2Cov(X, Y)$
+
++ Derive the moment generating function for $\mathcal{N}(0,1)$ and $\mathcal{N}(\mu, \sigma^2)$.  
+
+
++ Use the moment generating function to write out the first four moments (non-centralized) of $X \sim \mathcal{N}(0,1)$ ($M_X(t) = e^{1/2t^2}$) and $X\sim\mathcal{N}(\mu, \sigma^2)$ ($M_X(t) = e^{\mu t+1/2\sigma^2t^2}$).
+
+
+
+
+# Recap from last lecture
+
+\begin{enumerate}
+\item know the sampling distribution of $\bar{X}$ and other large sample behaviour of $\bar{X}$
+\item be able to find estimators using the two approaches given the p.d.f or p.m.f
+\item know $\bar{X}$ and $S^2$ and their properties 
+\begin{enumerate}[a]
+\item are they biased/unbiased estimators of $\mu$ and $\sigma^2$?
+\item what is the MSE of $\bar{X}$
+\item if the samples come from normal, show $\bar{X}$ is sufficient.
+\item if the samples come from normal, how do the mean and variance estimators using the two approaches compare to the estimators $\bar{X}$ and $S^2$?
+\end{enumerate}
+\end{enumerate}
+
+
+
+# An example question for 1)
+
+A random sample of $n=100$ high school students are drawn from all high school students in the province of Ontario, the estimated mean height in cm of this sample is $160$cm while the estimated variance is $64$cm. 
+
++ If someone from Statistics Canada told you that this average height corresponds exactly to the 3rd quartile (75\%) of the sampling distribution of mean height in high school students. Can you give a rough approximation to how far the estimate is from the true mean height?
+
+    - *Hint*: find a statistic that has a standard normal distribution and then use the connection between the standard deviation of a standard normal and quantile distances.
+    - *Answer*: 0.5396cm or $\Phi^{-1}(0.75)\sqrt{\hat{\sigma}^2/n} =x_{0.75}\sqrt{\hat{\sigma}^2/n}$
+
++ What could you change to obtain a more accurate estimate of the mean height?
+
+    - *Answer*: Increase sample size
+
+
+
+
+# Topics covered in this lecture
+
+\begin{itemize}
+\item Variance of an estimator (precision)
+\begin{itemize}
+\item The jackknife method 
+\item The bootstrap method
+\begin{itemize}
+\item Non-parameteric bootstrap
+\item Parametric bootstrap
+\end{itemize}
+\end{itemize}
+\item Interval estimators
+\begin{itemize}
+\item confidence interval (CI)
+\item CI for $\bar{X}$ when $\sigma^2$ is known
+\item CI for $\bar{X}$ when $\sigma^2$ is not known
+\item CI for $\sigma^2$
+\item CI for $p$ the proportion of success in Binomial
+\end{itemize}
+\end{itemize}
+
+
+<!-- \item Statistical tests for three or more samples (brief - to be continued in Lecture 5) -->
+<!-- \begin{itemize} -->
+<!-- \item test for equality of means (F-test) -->
+<!-- \item test for equality of variance (Bartlett and Levene's test) -->
+<!-- \end{itemize} -->
+
+
+
+
+
+
+---- 
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{Variance of an estimator (precision)}
+}
+\end{center}
+
+\begin{itemize}
+\item The jackknife method 
+\item Bootstrap methods
+\end{itemize}
+
+
+
+
+# We have an estimator, but how good is it?
+
++ From last lecture we learnt some basic properties of a good estimator: **consistency**, **unbiasedness** and **sufficiency**. 
+
++ We know that *MSE* provides a measure that balances the precision and accuracy of an estimator
+
++ *MSE* has two components, variability of the estimator and the bias.
+
++ Bias is easy to estimate, due to the simple analytical construction
+
+\[
+\text{Bias} = E_{X|\theta} (\hat{\theta} - \theta) 
+\]
+
++ For an unbiased estimator, the MSE is equal to the variance of the estimator.
+
+
+What about the variance of the estimator? 
+
+
+
+
+
+# Variance of the estimator
+
++ The variance of the estimator $\hat{\theta}$, $\text{Var}(\hat{\theta})$ itself can be seen as a parameter, and thus needs to be estimated.
+
++ In practice, the square root of the variance is used to have the same unit as the estimator. 
+
++ A realized estimate is often presented as $\hat{\theta} \pm s.e.(\hat{\theta})$ to show how precise or stable the estimate is if we had calculated using different samples. 
+
++ Ideally, we want a smaller variance so the estimates do not vary too much across samples. 
+
+
+
+
+# An example: the sample mean
+
++ Suppose we have observed the height (in cm) of $n=100$ high-school students ($x_1, \dots, x_n$), the mean
+\[
+\bar{x} = \sum_{i=1}^n x_i/n
+\]
+is a single number summarizing the average height. 
+
++ However, we do not know how precise this number is. For example, if $\bar{x} = 160.763$, are we more comfortable say the average height is 160cm or 160.7cm?
+
++ This can be solved by calculating the standard error (which is the realied value of the standard deviation of the estimator $\bar{X}$)
+\[
+\widehat{se}(\bar{x}) = s/\sqrt{n} =\Big[ \sum_{i=1}^n (x_i-\bar{x})^2/(n-1)\Big]^{1/2}/\sqrt{n}
+\]
+
++ If $s.e.$ for the height example is 0.1, then we should not take the second and third digits of $160.763$ very seriously.
+
+
+
+
+
+# What about when direct standard error formlas do not exist?
+
++ consider the 75\% percentile ($x_{q=0.75}$) or the third sample moment ($\sum x_i^3/n$)
+
++ we need a non-formulaic approach to solve a wide range of problems
+
++ two computation-based methods come to the rescue!
+
+    - the jackknife estimate of standard error
+    - the bootstrap
+
+
+
+
+# The jackknife method 
+
+Consider a realized sample $\mathbf{x} = (x_1, \dots, x_n)$ drawn iid from some unknown distribution. We are interested in the standard error of a statistic $\hat{\theta} = s(\mathbf{x})$ computed from the sample.
+
++ Let $\mathbf{x_{(-i)}}$ denote the sample with the i$th$ element absent, and similarly $\hat{\theta}_{(-i)} = s(\mathbf{x}_{(-i)})$. 
+
++ This construction is called "leave-one-out". 
+
++ Repeat the process for each $i=1,\dots, n$ and the jackknife estimate of the standard error for $\hat{\theta}$ is
+\[
+\widehat{se}_{\text{jack}} = \Big[\frac{n-1}{n} \sum_{i=1}^n \Big(\hat{\theta}_{(-i)} - \hat{\theta}_{(.)} \Big)^2 \Big]^{1/2}
+\]
+where
+\[
+\hat{\theta}_{(.)} = \sum_{i=1}^n \hat{\theta}_{(-i)}/n
+\]
+
+
+
+
+# Exercise
+
+Compute the jackknife estimate of the standard error for $\hat{\theta} =\bar{x}$.
+
+Hints:
+\[
+\hat{\theta}_{(-i)} = (n\bar{x}-x_i)/(n-1)
+\]
+\[
+\hat{\theta}_{(.)} = \bar{x}
+\]
+simplify everything you get 
+\[
+\Big[\frac{1}{(n-1)n} \sum_{i=1}^n \Big(x_i - \bar{x}\Big)^2 \Big]^{1/2}
+\]
+
+
+
+# Bootstrap methods
+
+If the jackknife method can be considered as a way to resample from the original sample (taking $n-1$ out of $n$), then bootstrap is a more generalized method that utilizes resampling. 
+
++ Define \textbf{a bootstrap sample} to be the collection:
+\[
+\mathbf{x}^{*} = (x_1^{*},\dots, x_n^{*})
+\]
+where each $x_i^{*}$ is a random draw with equal probability (i.e. with replacement) from the sample $(x_1, \dots, x_n)$.
+
++ Similarly, we can compute from each bootstrap sample 
+\[
+\hat{\theta}^{*} = s(\mathbf{x}^{*})
+\]
+
++ Repeat so we end up with $B (=1000)$ bootstrap samples, and $(\hat{\theta}^{*}_1, \dots, \hat{\theta}^{*}_B)$
+
++ The bootstrap estimate of the standard error of a statistic $\hat{\theta} = s(\mathbf{x})$ is then
+\[
+\widehat{se}_\text{boot} = \Big[\sum_{i=1}^B\frac{(\hat{\theta}^{*}_i - \hat{\theta}^{*})^2}{B}\Big]^{1/2}
+\]
+where $\hat{\theta}^{*} = \sum_{i=1}^B \hat{\theta}^{*}_i/B$.
+
+
+
+# nonparametric bootstrap
+
++ The above procedure is called a non-parametric bootstrap as there was no assumption about **a parametric model**.
+
++ Any large sample properties of the bootstrap estimator $se$ depends on *resampling with replacement*
+
++ You can change two things: the size of the boostrap sample $n^{*}$ and the number of bootstrap samples $B$ 
+
++ Generally the larger the better, but you can play with the code yourself and see.
+
+
+# An example of non-parametric bootstrap in R
+<!-- simulate some data for bootstrap methods 
+write.csv(rnorm(100),"random_normals.csv", row.names=F)
+-->
+```{r, size = "scriptsize", cache=TRUE}
+x <- read.csv("random_normals.csv")$x
+# You can simply do
+# x = rnorm(100)
+n <- length(x)
+n_star <- n
+B_sample <- 1000
+# coding via a for loop
+boot_mean <-  NA
+for (j in 1:B_sample){
+boot_sample <- sample(x, n_star, replace=T)
+boot_mean[j] <- mean(boot_sample)
+}
+print(sd(boot_mean))
+# simpler coding:
+boot_mean_100 <- replicate(100, mean(sample(x, n_star, replace=T)))
+boot_mean_1000 <- replicate(1000, mean(sample(x, n_star, replace=T)))
+boot_mean_100000 <- replicate(100000, mean(sample(x, n_star, replace=T)))
+print(c(sd(boot_mean_100), sd(boot_mean_1000), sd(boot_mean_100000)))
+library(bootstrap)
+jackknife(x, mean)$jack.se 
+```
+
+
+# An example of non-parametric bootstrap in R (cont'd)
+
+```{r, fig.height=3, fig.width=3.5}
+library(ggplot2)
+ggplot(data=data.frame(boot_mean), aes(x=boot_mean)) + geom_histogram(binwidth=0.02, colour="black", fill="white") + 
+  xlab("mean in bootstrap sample of size 100,000") + ggtitle("Sampling distribution of mean via a nonparametric bootstrap")
+```
+
+
+
+# An example of non-parametric bootstrap in Python
+
+```{python, size = "scriptsize"}
+import pandas
+import numpy as np
+x = pandas.read_csv("random_normals.csv")
+n = len(x)
+n_star = round(n*0.7)
+B_sample = 10000
+""" coding via a for loop """
+boot_mean = []
+for j in range(0, B_sample):
+  idx = np.random.choice(x.shape[0], n_star)
+  boot_sample = np.array(x)[idx,0]
+  boot_mean.append(boot_sample.mean())
+
+print(np.std(np.array(boot_mean)))
+"""import matplotlib"""
+"""import matplotlib.pyplot as plt"""
+"""plt.hist(boot_mean, 20, density=True, facecolor='g', alpha=0.75)"""
+"""plt.show()"""
+```
+
+For jackknife see [here](http://docs.astropy.org/en/stable/install.html).
+
+
+
+
+# An example of non-parametric bootstrap in Python (cont'd)
+
+```{r  out.width = "80%", echo=F}
+include_graphics("lec3_figure_1.png")
+```
+
+
+
+# parametric bootstrap
+
+Suppose the random variables were sampled from a known parametric distribution with parameter $\theta$:
+\[
+X_1, \dots, X_n \sim F(|\theta)
+\]
+
++ The parametric bootstrap is initiated first by estimating $\theta$ using the sample $\mathbf{x} = (x_1, \dots, x_n)$; usually by maximum likelihood:
+\[
+\hat{\theta}_{MLE} = \text{argmax}_\theta L(\theta|\mathbf{x})
+\]
+
++ For each bootstrap sample of size $n^{*}$, we sample from the distribution
+\[
+x_1^*, \dots, x_{n_*}^* \sim F(|\hat{\theta}_{MLE})
+\]
+
++ Compute $\hat{\theta}^{*} = s(x_1^*, \dots, x_{n_*}^*)$
+
++ Obtain $B (=1000)$ number of bootstrap samples, the estimate of the standard error of a statistic $\hat{\theta} = s(\mathbf{x})$ is again:
+\[
+\widehat{se}_\text{boot} = \Big[\sum_{i=1}^B\frac{(\hat{\theta}^{*}_i - \hat{\theta}^{*})^2}{B}\Big]^{1/2}
+\]
+where $\hat{\theta}^{*} = \sum_{i=1}^B \hat{\theta}^{*}_i/B$.
+
+
+# An example of parametric bootstrap in R
+<!-- simulate some data for bootstrap methods 
+write.csv(rnorm(100),"random_normals.csv", row.names=F)
+-->
+
+
+```{r, size = "scriptsize", cache=TRUE}
+x <- read.csv("random_normals.csv")$x
+n <- length(x)
+B_sample <- 10000
+n_star <- n
+# find mle of the normal 
+ll <- function(param){
+  mu <- param[1]
+  sigma2 <- param[2]
+  -sum(dnorm(x, mean = mu, sd = sqrt(sigma2), log=T))
+}
+mles <- nlm(ll, p=c(0,1))$estimate
+# coding via a for loop
+parboot_mean <-  NA
+for (j in 1:B_sample){
+par_boot_sample <- rnorm(n_star, mean = mles[1], sd=mles[2])
+parboot_mean[j] <- mean(par_boot_sample)
+}
+print(sd(parboot_mean))
+# simpler coding:
+parboot_mean_100 <- replicate(100, mean(rnorm(n_star, mean = mles[1], sd=mles[2])))
+parboot_mean_1000 <- replicate(1000, mean(rnorm(n_star, mean = mles[1], sd=mles[2])))
+parboot_mean_10000 <- replicate(10000, mean(rnorm(n_star, mean = mles[1], sd=mles[2])))
+print(c(sd(parboot_mean_100), sd(parboot_mean_1000), sd(parboot_mean_10000)))
+```
+
+# An example of non-parametric bootstrap in R (cont'd)
+
+```{r, fig.height=3, fig.width=3.5}
+library(ggplot2)
+ggplot(data=data.frame(parboot_mean), aes(x=parboot_mean)) + geom_histogram(binwidth=0.02, colour="black", fill="white") + 
+  xlab("mean in bootstrap sample of size 10,000") + ggtitle("Sampling distribution of mean via a parametric bootstrap")
+```
+
+
+
+# An example of parametric bootstrap in Python
+
+```{python, size = "scriptsize"}
+import pandas
+import numpy as np
+from scipy.optimize import minimize
+from scipy.stats import norm
+"""np.random.normal(mu, sigma, 100)"""
+x = pandas.read_csv("random_normals.csv")
+n = len(x)
+n_star = n
+B_sample = 10000
+""" coding via a for loop """
+# Define the likelihood function where params is a list of initial parameter estimates
+def normalLL(params):
+    # Resave the initial parameter guesses
+    mu = params[0]
+    sd = params[1]
+    logLik = -np.sum(norm.logpdf(x, loc=mu, scale=sd) )
+    # Tell the function to return the NLL (this is what will be minimized)
+    return(logLik)
+
+# Run the minimizer
+results = minimize(normalLL, [0,1], method='nelder-mead')
+est_mean = results['x'][0]
+est_sd = results['x'][1]
+
+parboot_mean = []
+for j in range(0, B_sample):
+  parboot_sample = norm.rvs(loc = est_mean, scale = est_sd, size=n_star)
+  parboot_mean.append(parboot_sample.mean())
+  
+print(np.std(np.array(parboot_mean)))
+``` 
+
+<!-- import matplotlib -->
+<!-- import matplotlib.pyplot as plt -->
+<!-- plt.hist(parboot_mean, 20, density=True, facecolor='g', alpha=0.75) -->
+<!-- plt.show() -->
+
+
+# An example of parametric bootstrap in Python (cont'd)
+
+```{r  out.width = "80%", echo=F}
+include_graphics("lec3_figure_2.png")
+```
+
+
+# Bootstrap methods (a quick summary)
+
+Pros:
+
++ conceptually simple 
++ (under some conditions) asymptotically consistent
++ less assumptions (normality)
++ the use is more general as we will see its use in the next a few lectures
+
+Cons:
+
++ it does not provide general finite-sample guarantees on performances
++ computationally intensive (no longer a problem)
+
+
+
+
+
+
+---- 
+<!-- add new slide without header -->
+\begin{center}
+\textcolor{blue}{ 
+    \Large{Interval estimates}
+}
+\end{center}
+
+\begin{itemize}
+\item Confidence Intervals (CI)
+\item CI for $\bar{X}$ when $\sigma^2$ is known
+\item CI for $\bar{X}$ when $\sigma^2$ is not known
+\item CI for $\sigma^2$
+\item CI for $p$ the proportion of success in Binomial
+\end{itemize}
+
+
+
+
+# From point estimate to interval estimate
+
++ We have established several point estimator such as $\bar{X}$ and $S^2$
+
++ Usually use mean squared error to assess the performance of an estimator
+\[
+\text{E}_{X|\theta}(\hat{\theta} - \theta)^2 = \text{Var}_{X|\theta}(\hat{\theta}) + (\text{E}_{X|\theta}\hat{\theta}-\theta)^2
+\]
+
++ However, point estimate alone does not suggest how far or close we are to the true parameter value
+
++ Thus, we introduced the variance of an estimator $\text{Var}_{X|\theta}(\hat{\theta})$
+
++ In other discipline, you might have seen something like $\theta \pm sd$ to express a range of plausible values
+
++ Can we do better and put a plausibility on any range?
+
+
+
+# Confidence Intervals (CI)
+
++ A confidence interval (CI) is a range estimated from the data $x_1,\dots, x_n$ that might contain the true value of an unknown population parameter $\theta$.
+
++ A confidence level ($1-\alpha$) is the proportion of times $\theta$ is captured in the interval over confidence intervals constructed using a large number of random samples. 
+
+    - In other words, you have $100\alpha$% chance of not capturing $\theta$ 
+    - Often $\alpha = 0.01, 0.05, 0.1$ corresponding to 99\%, 95\% and 90\% CI
+
++ Intuitively, the wider the CI, the more likely the true value is captured, and the smaller $\alpha$ is; on the other hand, the narrower the CI, the less likely true value is captured.
+
++ However, the best scenario would be a narrow CI at a small $\alpha$, which implies high precision with high probability of capturing $\theta$.
+
+
+# How to construct confidence intervals for a statistic?
+
++ $\bar{X}$ the mean estimators
+
+    - the proportion of success falls into this category as well since 
+
+\[
+\text{E}(1_{sucess}) =\text{P}(\text{Success})*1 + \text{P}(!\text{Success})*0 = \text{P}(\text{Success})
+\]
+
++ $S^2$ the variance estimator
+
+
+
+
+
+
+
+
+
+
+# Confidence interval for $\bar{X}$
+
+What do we know about $\bar{X}$?
+
++ Define $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$.
+
++ (a random normal sample) Let $X_1, \dots, X_n$ be a random sample from $\mathcal{N}(\mu, \sigma^2)$.  
+
+    - We have $\text{E}(\bar{X}) = \mu$ and $\text{Var}(\bar{X}) = \frac{\sigma^2}{n}$.
+    - The above implies $\bar{X}$ is unbiased and thus its MSE is $\text{Var}(\bar{X})$.
+    - We have $\bar{X} \sim \mathcal{N}(\mu, \frac{\sigma^2}{n})$
+
++ (a random sample) Let $X_1, \dots, X_n$ be a random sample from a population with mean $\mu$ and variance $\sigma^2 < \infty$.  
+
+    - We have $\text{E}(\bar{X}) = \mu$ and $\text{Var}(\bar{X}) = \frac{\sigma^2}{n}$.
+    - The above implies that $\bar{X}$ is unbiased and thus its MSE is simply $\text{Var}(\bar{X})$.
+
+
+
+
+# Visualize the sampling distribution of $\bar{X}$ under normality
+
+```{r, echo=F, message=F, warning=F}
+curve(dnorm(x, 0,0.5), -3,3, xaxt="n", xlab="", yaxt="n")
+curve(x*0, add=T)
+lines(c(qnorm(0.5, 0, 0.5), qnorm(0.5, 0, 0.5)),c(0, dnorm(qnorm(0.5, 0, 0.5), 0, 0.5)), lty=2)
+lines(c(qnorm(0.75, 0, 0.5), qnorm(0.75, 0, 0.5)),c(0, dnorm(qnorm(0.75, 0, 0.5), 0, 0.5)))
+lines(c(qnorm(0.25, 0, 0.5), qnorm(0.25, 0, 0.5)),c(0, dnorm(qnorm(0.25, 0, 0.5), 0, 0.5)))
+lines(c(qnorm(0.975, 0, 0.5), qnorm(0.975, 0, 0.5)),c(0, dnorm(qnorm(0.975, 0, 0.5), 0, 0.5)), col=2)
+lines(c(qnorm(0.025, 0, 0.5), qnorm(0.025, 0, 0.5)),c(0, dnorm(qnorm(0.025, 0, 0.5), 0, 0.5)), col=2)
+```
+
+
+
+
+
+
+
+
+# Recall distribution of $\bar{X}$:
+
+\begin{align}
+M_{\bar{X}}(t) &= \text{E}(e^{t\bar{X}}) \\
+& = \text{E}(e^{t\frac{1}{n}\sum_{i=1}^n X_i})\\
+& = \text{E}(\Pi_{i=1}^n e^{t\frac{1}{n} X_i}) \\
+& = \Pi_{i=1}^n \text{E}(e^{t\frac{1}{n} X_i}) \\
+& = \Pi_{i=1}^n (e^{t\mu/n + 1/(2)\sigma^2(t/n)^2}) \\
+& = (e^{t\mu/n + 1/(2)\sigma^2(t/n)^2})^n \\
+& = e^{t\mu + 1/(2n)\sigma^2t^2}
+\end{align}
+
+
+
+# CI for $\bar{X}$ when $\sigma^2$ is known
+
+Since $\bar{X} \sim \mathcal{N}(\mu, \frac{\sigma^2}{n})$, we can define
+\[
+Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0,1)
+\]
+where $Z$ is a standard normal random variable.
+
++ We want to find $l$ and $u$ such that $\text{Pr}_{\bar{X}}(l<\mu<u) = 0.95$ under the sampling distribution of $\bar{X}$. 
++ This means, $l$ and $u$ must be functions of $\bar{X}$ (otherwise everything inside the probability is constant, in which case the probability is either 0 or 1)
+\begin{align}
+\text{Pr}_{\bar{X}}(l<\mu<u) & = \text{Pr}_{\bar{X}}(\bar{X} -l > \bar{X} - \mu > \bar{X} -u)\\
+& = \text{Pr}(\frac{\bar{X} -l}{\sigma/\sqrt{n}} > \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} > \frac{\bar{X} -u}{\sigma/\sqrt{n}})\\
+& = \text{Pr}(\frac{\bar{X} -l}{\sigma/\sqrt{n}} > Z > \frac{\bar{X} -u}{\sigma/\sqrt{n}})
+\end{align}
+
+
+# CI for $\bar{X}$ when $\sigma^2$ is known
+
++ We know the sampling distribution of $\bar{X}$ is centered at $\mu$, to recover the 95\% confidence interval (between 0.975 quantile and 0.025 quantile), solve for 
+
+    - $\frac{\bar{X} -l}{\sigma/\sqrt{n}} = \Phi^{-1}(0.975) = 1.96$
+    - $\frac{\bar{X} -u}{\sigma/\sqrt{n}} = \Phi^{-1}(0.025) = -1.96$
+
++ The upper end point is $u = 1.96\sigma/\sqrt{n} + \bar{X}$, while the lower end point is $l = -1.96\sigma/\sqrt{n} + \bar{X}$
+
+
+# CI for $\bar{X}$ when $\sigma^2$ is known (cont'd)
+
+
+The 95\% confidence interval of $\bar{X}$ under normality with known $\sigma^2$ is $(\bar{X}-1.96\sigma/\sqrt{n}, \bar{X}+1.96\sigma/\sqrt{n})$ or $\bar{X}\pm 1.96\sigma/\sqrt{n}$.
+
+
++ Can you repeat the calculation to find the 99\% CI or the 90\% CI?
+
++ How does the width of the CI compare when we change the confidence level ($\alpha = 0.1, 0.05, 0.01$)?
+
++ Can you think of ways to reduce the CI without changing the confidence level?
+
+
+
+# An example question
+
+```{r  out.width = "100%", echo=F}
+include_graphics("prac1_lec3.png")
+```
+
+# Solution: Step by Step
+
+1. Setting up the problem: what is the random sample?
+
+    - $X_1, \dots, X_n$ where $X_i$ is the recorded pound-force required to break the binding
+
+2. What do we know?
+
+    - $\sigma = 0.8$
+    - Width of the 95\% CI is 0.1 lb
+    
+3. Find the analytical expression for 95\% CI of the average force required:
+
+    - $(\bar{X}-1.96\sigma/\sqrt{n}, \bar{X}-1.96\sigma/\sqrt{n})$
+
+4. Given $\sigma = 0.8$, solve for $n$
+\[
+\text{width of CI} = 1.96\sigma/\sqrt{n}*2 = 0.1    
+\]
+
+
+
+
+# CI for $\bar{X}$ when $\sigma^2$ is not known
+
+We still have $\bar{X} \sim \mathcal{N}(\mu, \frac{\sigma^2}{n})$, but since now $\sigma$ is not known, we can not rely on it to give the sampling distribution.
+
+Define
+\[
+T = \frac{\bar{X} - \mu}{S/\sqrt{n}} = \frac{(\bar{X} - \mu)(\sigma/\sqrt{n})}{\sqrt{S^2/n^2}}
+\]
+
+Does this have a known distribution?
+
+
+
+# Review of a chi-squared distribution
+
++ Definition: If $Z = \frac{X_i-\mu}{\sigma} \sim \mathcal{N}(0,1)$,then we can show by m.g.f or a direct change of variable that $Z^2 = \Big(\frac{X_i-\mu}{\sigma}\Big)^2 \sim \chi^2(1)$.
+
++ A random variable $Y \sim \chi^2(k)$ is a chi-squared random variable with degrees of freedom $k$.
+
+    - $\text{E}(Y) = k$ 
+    - $\text{Var}(Y) = 2k$ 
+
++ $(n-1)S^2/\sigma^2 = \sum_{i=1}^n (X_i-\mu)^2/\sigma^2 - n(\bar{X}-\mu)^2/\sigma^2$ has a chi-squared distribution with d.f $(n-1)$.
+
++ The distribution is asymmetric. 
+
+
+# Chi-squared distributions
+
+```{r, echo=F}
+curve(dchisq(x, 2), 0,10, yaxt="n", ylab = "Density")
+curve(dchisq(x, 5), 0,10, add=T, col=2)
+curve(dchisq(x, 10), 0,10, add=T, col=3)
+legend("topright", bty="n", c(paste("d.f =", c(2,5,10))), lty=1, col=1:3)
+```
+
+
+# Recall the sampling distribution of $T$ 
+
++ We first construct this statistic to be a ratio of two statistics:
+$\frac{\bar{X} - \mu}{S/\sqrt{n}} = \frac{(\bar{X} - \mu)(\sigma/\sqrt{n})}{\sqrt{S^2/n^2}}$
+
++ Notice the top one follows standard normal and the bottom is $\sqrt{\chi^2_{n-1}/(n-1)}$.
+
++ As we have shown previously that these two are independent, we can thus derive the distribution by looking at the joint distribution of the two components.
+
++ The result you need to know is that $\frac{\bar{X} - \mu}{S/\sqrt{n}}$ follows a student's t-distribution with degrees of freedom $k=n-1$, or $T\sim t_k$ ($k\ge2$)
+
+    - $\text{E}(T) = 0$ 
+    - $\text{Var}(T) = k/(k-2)$ 
+
+\[
+f_{T}(t|k) = \frac{\Gamma\Big(\frac{k+1}{2}\Big)}{\Gamma\Big(\frac{k}{2}\Big)} \frac{1}{(k\pi)^{1/2}}\frac{1}{(1+t^2/k)^\frac{k+1}{2}},\text{       } -\infty < t < \infty 
+\]
+
+
+# Student's t distribution
+
+
+```{r, echo=F}
+curve(dt(x, 2), -10,10, yaxt="n", ylab = "Density", ylim=c(0,0.4))
+curve(dt(x, 5), -10,10, add=T, col=2)
+curve(dt(x, 10), -10,10, add=T, col=3)
+curve(dt(x, 100), -10,10, add=T, col=4)
+curve(dnorm(x), -10,10, add=T, col=5)
+legend("topright", bty="n", c(paste("d.f =", c(2,5,10,100)), "norm"), lty=1, col=1:5)
+```
+
+
+# CI for $\bar{X}$ when $\sigma^2$ is not known
+
++ We want to find $l$ and $u$ such that $\text{Pr}_{\bar{T}}(l<\mu<u) = 0.95$ under the sampling distribution of $\bar{T}$. 
+
++ Again, $l$ and $u$ must be functions of $\bar{X}$. 
+
+ 
+ Can you try to derive this one on your own? 
+ 
+
+
+# CI for $\bar{X}$ when $\sigma^2$ is not known
+
+
+\begin{align}
+\text{Pr}_{T}(l<\mu<u) & = \text{Pr}_{T}(\bar{X} -l > \bar{X} - \mu > \bar{X} -u)\\
+& = \text{Pr}(\frac{\bar{X} -l}{s/\sqrt{n}} > \frac{\bar{X} - \mu}{s/\sqrt{n}} > \frac{\bar{X} -u}{s/\sqrt{n}})\\
+& = \text{Pr}(\frac{\bar{X} -l}{s/\sqrt{n}} > T > \frac{\bar{X} -u}{s/\sqrt{n}})
+\end{align}
+
++ We know the sampling distribution of $\bar{X}$ is centered at $\mu$, to recover the 95\% confidence interval (between 0.975 quantile and 0.025 quantile), solve for 
+
+    - $\frac{\bar{X} -l}{s/\sqrt{n}} = t_{0.975, n-1}$ 
+    - $\frac{\bar{X} -u}{s/\sqrt{n}} = t_{0.025, n-1}$
+
++ The upper end point is $u = \bar{X} - t_{0.025, n-1}s/\sqrt{n}$, while the lower end point is $l = \bar{X} - t_{0.975, n-1}s/\sqrt{n}$.
+
+
+
+# Quantiles of student's t
+
+```{r  out.width = "100%", echo=F}
+include_graphics("tTable.png")
+```
+
+
+# Quantiles of student's t
+
+```{r, size ="scriptsize"}
+c(qt(0.975, 100-1), qt(0.025, 100-1))
+
+c(qt(0.975, 1000-1), qt(0.025, 1000-1))
+```
+
+```{python, size = "scriptsize"}
+from scipy.stats import t
+print(t.ppf(0.975, df=100-1))
+print(t.ppf(0.025, df=100-1))
+```
+
+
+# CI for $\sigma^2$
+
+What do we know about $S^2$?
+
++ $\text{E}(S^2) = \sigma^2$
+
++ $\chi^2 = (n-1)S^2/\sigma^2 = \sum_{i=1}^n (X_i-\mu)^2/\sigma^2 - n(\bar{X}-\mu)^2/\sigma^2$ has a chi-squared distribution with d.f $(n-1)$.
+
+Can you derive $u$ and $l$ such that 
+
+\[
+\text{P}_{S^2}(l<\sigma^2<u)=0.95
+\]
+
+
+
+# CI for $\sigma^2$
+
+\begin{align}
+\text{Pr}_{S^2}(l<\sigma^2<u) & = \text{Pr}(1/l > 1/\sigma^2 > 1/u)\\
+& = \text{Pr}((n-1)S^2/l > (n-1)S^2/\sigma^2 > (n-1)S^2/u)\\
+& = \text{Pr}((n-1)S^2/l > \chi^2 >  (n-1)S^2/u)
+\end{align}
+
++ We know the sampling distribution of $S^2$ is centered at $\sigma^2$, to recover the 95\% confidence interval (between 0.975 quantile and 0.025 quantile), solve for 
+
+    - $(n-1)S^2/l = \chi^2_{0.975, n-1}$ 
+    - $(n-1)S^2/u = \chi^2_{0.025, n-1}$
+
+Note that since the quantiles of chi-squared random variables are not symmetric you will have to get two different values. On a test, this will be provided to you.
+
+
+# Quantiles of a chi-squared
+
+```{r, size ="scriptsize"}
+c(qchisq(0.975, 100-1), qchisq(0.025, 100-1))
+c(qchisq(0.975, 1000-1), qchisq(0.025, 1000-1))
+```
+
+```{python, size = "scriptsize"}
+from scipy.stats import chi2
+print(chi2.ppf(0.975, df=100-1))
+print(chi2.ppf(0.025, df=100-1))
+```
+
+
+
+# CI for $p$ the proportion of success in Binomial
+
+Let $X_1, \dots, X_n$ be a random sample from a binomial distribution with $B(N, p)$. 
+
+Could you try this one yourself?
+
++ Find an estimator of $p$
+
++ Use CLT to conclude the sampling distribution of $p$
+
++ Find the sampling distribution involing $\hat{p}$ and $p$
+
++ Find the 95\% CI for $p$ given $N$
+
+
+Solution will be given at the next class.
+
+
+
+
+
+# Key insights about CIs
+
++ When constructing a CI, we need to find the sampling distribution or the approximated sampling distribution of the estimator $\hat{\theta}$ relative to the parameter ${\theta}$.
+
++ When the sampling distribution is not easy to work with, we should try to find a quantity that contains both $\hat{\theta}$ and $\theta$ that does have a simple distribution that can be translated to quantiles (e.g. $Z$ or $T$).
+
++ For $\bar{X}$ from non-normal samples, we can invoke the CLT when $n > 30$, the CI will be approximated rather than exact.
+
++ Know relationships among $\alpha$ (confidence level), width of the CI, sample size ($n$).
+
+
+
+
+
+
+
+
+
+# Open question for next lecture
+
+
+Combine what you now know about the bootstrap method and confidence interval, can you come up with a 95\% for the median of a random sample (any random sample) of size $n=100$?
+
+
+
+<!-- ----  -->
+<!-- <!-- add new slide without header --> 
+<!-- \begin{center} -->
+<!-- \textcolor{blue}{  -->
+<!--     \Large{Using sampling to estimate parameters} -->
+<!-- } -->
+<!-- \end{center} -->
+
+
+<!-- # Two Column Layout -->
+<!-- \begincols -->
+<!--   \begincol{.48\textwidth} -->
+<!-- This slide has two columns. -->
+<!--   \endcol -->
+<!-- \begincol{.48\textwidth} -->
+<!-- ```{r pressure} -->
+<!-- plot(pressure) -->
+<!-- ``` -->
+<!--   \endcol -->
+<!-- \endcols -->
+
+<!--  ```{r  out.width = "80%", echo=F} -->
+<!--  include_graphics("fig261.pdf")  -->
+<!--  ``` -->
+
+
+<!--```{r, fig.height=3, fig.width=4, highlight=FALSE}
+ggplot(data = Cars93, aes(x = "", y = Fuel.tank.capacity)) + 
+  geom_boxplot() + xlab("") + ylab("capacity in US gallons") + 
+  ggtitle(paste("Fuel tank capacity"))  
+#boxplot(Cars93$Fuel.tank.capacity, main = "Fuel tank capacity", ylab = "capacity in US gallons")
+``` 
+-->
+
+
+<!-- ```{r, fig.width=3, fig.height=3, comment=NA} -->
+<!-- library(ggplot2) -->
+<!-- ggplot(data=Cars93, aes(x=Rev.per.mile)) + -->
+<!--   geom_histogram(binwidth=100, colour="black", fill="white") +  -->
+<!--   xlab("Engine revolutions per mile")  +  -->
+<!--   ggtitle("Engine revolutions \n per mile (in highest gear).") -->
+<!-- mean(Cars93$Rev.per.mile); median(Cars93$Rev.per.mile) -->
+<!-- ``` -->
