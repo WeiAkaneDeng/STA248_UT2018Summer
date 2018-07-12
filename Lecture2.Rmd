@@ -820,11 +820,11 @@ Let $X_1, \dots, X_n \sim \mathcal{N}(\mu, \sigma^2)$ be iid. The likelihood is 
 
 \begin{align}
 L(\mu, \sigma^2| \mathbf{x}) &= \Pi_{i=1}^n \frac{1}{\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\\
-& = \frac{1}{\sqrt{2\pi}}e^{-\sum_{i=1}^n\frac{(x_i-\mu)^2}{2\sigma^2}}
+& = \frac{1}{(\sqrt{2\pi})^{n}}e^{-\sum_{i=1}^n\frac{(x_i-\mu)^2}{2\sigma^2}}
 \end{align}
 
 \[
-\frac{\partial}{\partial \mu} L(\mu, \sigma^2| \mathbf{x}) = 2\sum_{i=1}^n\frac{(x_i-\mu)^2}{2\sigma^2} = 0 
+\frac{\partial}{\partial \mu} L(\mu, \sigma^2| \mathbf{x}) = 2\sum_{i=1}^n\frac{(x_i-\mu)}{2\sigma^2} = 0 
 \]
 implies that 
 \[
