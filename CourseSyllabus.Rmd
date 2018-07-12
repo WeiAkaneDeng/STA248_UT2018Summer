@@ -80,30 +80,29 @@ Note that we will have additional office hours before midterm and final exam. If
 
 ### Lecture 2: Estimation - to think with data (July 9th, Monday)
 
-* First half: properties of estimates derived from data
++ properties of estimators derived from sample
 + unbiased, consistency
-+ sampling distribution, standard error
 + method of moments
 + maximum likelihood estimates
++ sampling distribution, standard error
 
-* Second half: idea of inferential learning; bootstrap sampling 
+
+### Lecture 3: Point estimation and interval estimation (July 11th, Wednesday)
+
++ Second half: idea of inferential learning; bootstrap sampling 
 + confidence intervals (CI)
 + parametric and non-parametric bootstrap
 + CI for $\mu$ and $\sigma^2$ (normal, t-distribution, or binomial distributions), what about the median?
 + bootstrap CIs.
 
 
-### Lecture 3: Hypothesis Tests and statistical significance
+### Lecture 4: Hypothesis Tests and statistical significance (July 16th, Monday)
 
+* formalize ideas of testing and inference
 + tests of significance
 + one-sided vs. two sided test
 + confidence intervals 
 + power
-
-
-### Lecture 4: Testing: Univariate and multivariate design - I (July 11th, Wednesday)
-
-* formalize ideas of testing and inference
 
 * student's t-test (one sample, two sample, and paired)
 + test of mean equality 
@@ -111,8 +110,7 @@ Note that we will have additional office hours before midterm and final exam. If
 + transformation
 
 
-
-### Lecture 5: Testing: Univariate and multivariate design -II (July 16th, Monday)
+### Lecture 5: Testing: Univariate and multivariate design -II (July 18th, Wednesday)
 
 + analysis of variance (one-way)
 + F-test in two samples
@@ -120,23 +118,21 @@ Note that we will have additional office hours before midterm and final exam. If
 + know how to construct an one-way ANOVA table
 + Levene's test (general idea for test of equality)
 
-
 * generalize the idea of F-test as a test for goodness of fit.
+
 + interactions (two-way - not tested)
 
 
-### Lecture 6: Summarize ideas of testing and inference (July 18th, Wednesday)
 
-* using bootstrap to estimate sampling distributions
-* multiple hypothesis (FDR and Bonferroni correction)
-* use and interpretation of p-value
-* quick review of ideas for midterm
+### Lecture 6: Midterm test (July 23rd, Monday)
 
-### Lecture 7: Midterm test (July 23th, Monday)
 
 Location to be announced the week before.
 
-### Lecture 8: Simple and multiple regression  (July 25th, Wednesday)
+
+
+### Lecture 7: Simple and multiple regression (July 25th, Wednesday)
+
 
 * evidence for linear relationship 
 + correlation coefficients
@@ -149,13 +145,23 @@ Location to be announced the week before.
 + measure of fit
 
 
-### Lecture 9: Midterm review (July 30th, Monday)
+
+### Lecture 8: Midterm review  (July 30th, Monday)
 
 Tianle subbing in
 
-### Lecture 10: More on linear regression (August 1st, Wednesday)
+
+### Lecture 9: Supervised learning with regression (August 1st, Wednesday)
 
 Tianle subbing in
+
+* linear regression as a supervised learning alogrithm
+
+
+### No lecture on August 6th 
+
+
+### Lecture 10: More on linear regression (August 8th, Wednesday)
 
 * extending to multiple variables
 + collinearity 
@@ -163,14 +169,7 @@ Tianle subbing in
 + measure of fit
 
 
-### No lecture on August 6th, Monday (Civic Holiday)
-
-
-### Lecture 11: Regression and supervised learning (August 8th, Wednesday)
-
-* linear regression as a supervised learning alogrithm
-
-### Lecture 12: Makeup lecture/Final review (August 13th, Monday)
+### Lecture 11: Makeup lecture/Final review (August 13th, Monday)
 
 
 

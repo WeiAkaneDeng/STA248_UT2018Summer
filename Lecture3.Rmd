@@ -739,7 +739,7 @@ include_graphics("prac1_lec3.png")
     
 3. Find the analytical expression for 95\% CI of the average force required:
 
-    - $(\bar{X}-1.96\sigma/\sqrt{n}, \bar{X}-1.96\sigma/\sqrt{n})$
+    - $(\bar{X}-1.96\sigma/\sqrt{n}, \bar{X}+1.96\sigma/\sqrt{n})$
 
 4. Given $\sigma = 0.8$, solve for $n$
 \[
