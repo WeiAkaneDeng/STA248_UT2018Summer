@@ -342,9 +342,9 @@ Let $Y$ be the number of samples greater than 200, and it has a hypergeometric d
 
 # reflection
 
-+ Suppose the finite population is $\{1, \dots, 100\}$, repeat the calculation. Are the two probabilities different?
++ Suppose the finite population is $\{1, \dots, 100\}$, repeat the calculation but finding the probability of all sample values greater than 20. Are the two probabilities different?
 
-+ Suppose the finite population remains the same $\{1, \dots, 1000\}$, but we are taking 100 samples, repeat the calculation. Are the two probabilities different now?
++ Suppose the finite population remains the same $\{1, \dots, 1000\}$, but we are taking 100 samples, repeat the calculation for all sample values greater than 200 . Are the two probabilities different now?
 
 + What do you conclude from these calculations?
 
