@@ -755,7 +755,7 @@ We still have $\bar{X} \sim \mathcal{N}(\mu, \frac{\sigma^2}{n})$, but since now
 
 Define
 \[
-T = \frac{\bar{X} - \mu}{S/\sqrt{n}} = \frac{(\bar{X} - \mu)(\sigma/\sqrt{n})}{\sqrt{S^2/n^2}}
+T = \frac{\bar{X} - \mu}{S/\sqrt{n}} = \frac{(\bar{X} - \mu)}{(\sigma/\sqrt{n})}\frac{(\sigma/\sqrt{n})}{\sqrt{S^2/n}}
 \]
 
 Does this have a known distribution?
@@ -789,7 +789,7 @@ legend("topright", bty="n", c(paste("d.f =", c(2,5,10))), lty=1, col=1:3)
 # Recall the sampling distribution of $T$ 
 
 + We first construct this statistic to be a ratio of two statistics:
-$\frac{\bar{X} - \mu}{S/\sqrt{n}} = \frac{(\bar{X} - \mu)(\sigma/\sqrt{n})}{\sqrt{S^2/n^2}}$
+$\frac{\bar{X} - \mu}{S/\sqrt{n}} = \frac{(\bar{X} - \mu)}{(\sigma/\sqrt{n})}\frac{\sqrt{\sigma^2/n}}{\sqrt{S^2/n}} = \frac{(\bar{X} - \mu)}{(\sigma/\sqrt{n})}\frac{1}{\sqrt{(n-1)S^2/\sigma^2\frac{1}{n-1}}}$
 
 + Notice the top one follows standard normal and the bottom is $\sqrt{\chi^2_{n-1}/(n-1)}$.
 
