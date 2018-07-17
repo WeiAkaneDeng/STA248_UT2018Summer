@@ -9,16 +9,19 @@ Syllabus has been updated to the current schedule.
 
 ### Course Instructor: 
 + [Wei Q. Deng](wei.deng@mail.utoronto.ca)
-+ Office: Steward building 103A (149 College Street)
 + Office hours: Monday 4-6pm, Wednesday 4-6pm (from second week)
-+ **Office hour location**: SS623B (TA office in the basement of Sidney Smith - starting July 9th)
++ Office hour location: SS623B (TA office in the basement of Sidney Smith - starting July 9th)
++ **Extra office hour before midterm Monday July 23rd 12:00pm-5:00pm (SS623B)**
+
 
 ### Class schedule
 + Monday 18:00-21:00 in SS 2118 (no lecture on Monday, August 6 (Civic holiday))
 + Wednesday 18:00-21:00 in SS 2118.
 
 ### Midterm date
-+ Date: **July 23rd**
++ Date: **July 23rd** 
++ Duration: 18:00-21:00
++ Location: **EX300 and EX310**
 
 
 
@@ -27,15 +30,20 @@ Syllabus has been updated to the current schedule.
 
 
     
++ [lecture 4](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.Rmd) for you to look at the R/Python code chunks. 
+
+    - Relevant readings from OpenIntro are Chapters 4 and 5; alternatively you can look at Chapters 7, 8, 9 of *Probability and Statistics for Engineering and the Sciences*.
+
+    
 + [lecture 3](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture3.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture3.Rmd) for you to look at the R/Python code chunks. 
 
-    - Relevant readings from OpenIntro are Chapter 4, specifically 4.1-4.3, and 4.5; alternatively you can look at Chapter 7, 8, 9 of *Probability and Statistics for Engineering and the Sciences*.
+    - Relevant readings from OpenIntro are Chapter 4, specifically 4.1-4.3, and 4.5; alternatively you can look at Chapters 7, 8, 9 of *Probability and Statistics for Engineering and the Sciences*.
 
 
 + [lecture 2](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture2.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture2.Rmd) for you to look at the R/Python code chunks. 
 
     - To practice what you learnt, make sure you know each of the concepts introduced as well as being able to solve the examples and exercises on the lecture slides. 
-    - Relevant readings from *OpenIntro* are Chapter 2, 3 (review for STA247) and 4.4; alternatively you can look at Chapter 2-4 (review for ST247) and Chapter 5 and 6 of *Probability and Statistics for Engineering and the Sciences*.
+    - Relevant readings from *OpenIntro* are Chapters 2, 3 (review for STA247) and 4.4; alternatively you can look at Chapters 2-4 (review for ST247) and Chapters 5 and 6 of *Probability and Statistics for Engineering and the Sciences*.
     - You can also refer to your slides or textbook from STA247 if you need a refresher on concepts such as expectation, variance and moment generating functions.
     
     
