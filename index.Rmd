@@ -28,8 +28,8 @@ Syllabus has been updated to the current schedule.
 
 ### Lecture Slides
 
++ [lecture 5](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture5.pdf) contains a quick review of topics learnt so far and related questions you might be tested on. Please try to take a look prior to class - we won't be able to go through all the questions in detail.
 
-    
 + [lecture 4](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.Rmd) for you to look at the R/Python code chunks. 
 
     - Relevant readings from OpenIntro are Chapters 4 and 5; alternatively you can look at Chapters 7, 8, 9 of *Probability and Statistics for Engineering and the Sciences*.
