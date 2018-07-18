@@ -545,7 +545,7 @@ In the cases above, we can test the null hypotheses $\mu = \mu_o$ or $p = p_o$ b
 Define the p-value of a test given the test statistic $Z$ (random variable) of a two-sided test:
 
 \[
-\text{p-value} = 2\text{min}(\text{P}(Z > - z_\text{obs}| \mu = \mu_o), \text{P}(Z > z_\text{obs}| \mu = \mu_o))
+\text{p-value} = 2\text{min}(\text{P}(Z < - z_\text{obs}| \mu = \mu_o), \text{P}(Z > z_\text{obs}| \mu = \mu_o))
 \]
 
 Define the p-value of a test given the test statistic $Z$ (random variable) of a one-sided test:
