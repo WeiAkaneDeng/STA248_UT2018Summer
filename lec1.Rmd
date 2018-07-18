@@ -746,7 +746,13 @@ alternatively
 Pr(\mathrm{x} > a) = 1- 0.25 = 0.75
 \]
 
-You can find $a$ by 
+or since we know $a < 0$ because it is to the left of the mean (which is zero), we can also find
+
+\[
+Pr(\mathrm{x} < -a) = 1- 0.25 = 0.75
+\]
+
+You can find $a$ or $-a$ by 
 
 + using a standard normal table (know how to do this)
 + use R
@@ -773,6 +779,7 @@ include_graphics("normal-table-large.png")
 
 ```{r}
  qnorm(0.75)
+ qnorm(0.25)
 ```
 
 
@@ -780,6 +787,8 @@ include_graphics("normal-table-large.png")
 from scipy.stats import norm
 a = norm.ppf(0.75)
 print(a)
+b = norm.ppf(0.25)
+print(b)
 ```
 
 
