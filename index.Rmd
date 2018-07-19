@@ -28,8 +28,7 @@ Syllabus has been updated to the current schedule.
 
 ### Lecture Slides
 
-+ [lecture 5](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture5.pdf) contains a quick review of topics learnt so far and related questions you might be tested on. Please try to take a look prior to class - we won't be able to go through all the questions in detail.
-
++ [lecture 5](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture5_sol.pdf) contains a quick review of topics learnt so far and partial solution to some of the questions.
 
 + [lecture 4](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.Rmd) for you to look at the R/Python code chunks. **There was a typo on slide page 32 for the two-sided test p-value, which has been corrected so it is now consistent with slide page 35.** 
 

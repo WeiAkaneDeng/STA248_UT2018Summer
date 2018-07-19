@@ -698,7 +698,7 @@ f_{T}(t|k) = \frac{\Gamma\Big(\frac{k+1}{2}\Big)}{\Gamma\Big(\frac{k}{2}\Big)} \
 
 + Recall that a statistic is defined as $T(X_1, \dots, X_n)$
 
-+ An "estimator" or "point estimate" is a statistic used to infer the value of an unknown parameter (so it is always used in reference to a parameter) 
++ An "estimator" or "point estimator" is a statistic used to infer the value of an unknown parameter (so it is always used in reference to a parameter) 
 
   - Notation: $\hat{\theta}_n = \hat{\theta}(\mathbf{X}) = T(X_1, \dots, X_n)$.  
   - For example, $\bar{X}$ is an estimator of $\mu$.
@@ -819,8 +819,8 @@ Define the maximum likelihood estimator (MLE) $\hat{\theta}$ to be:
 Let $X_1, \dots, X_n \sim \mathcal{N}(\mu, \sigma^2)$ be iid. The likelihood is then
 
 \begin{align}
-L(\mu, \sigma^2| \mathbf{x}) &= \Pi_{i=1}^n \frac{1}{\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\\
-& = \frac{1}{(\sqrt{2\pi})^{n}}e^{-\sum_{i=1}^n\frac{(x_i-\mu)^2}{2\sigma^2}}
+L(\mu, \sigma^2| \mathbf{x}) &= \Pi_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}\\
+& = \frac{1}{(\sqrt{2\pi}\sigma)^{n}}e^{-\sum_{i=1}^n\frac{(x_i-\mu)^2}{2\sigma^2}}
 \end{align}
 
 \[
