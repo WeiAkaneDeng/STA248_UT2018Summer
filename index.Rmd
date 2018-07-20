@@ -48,7 +48,7 @@ Syllabus has been updated to the current schedule.
     
     
     
-+ [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.Rmd) for you to look at the code chunks. 
++ [lecture 1](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/lec1.Rmd) for you to look at the code chunks **slide page 40 has been updated to reflect a more accurate depiction of a left skewed distribution**. 
 
     - To practice what you learnt in Lecture 1, you can explore the car [dataset](https://weiakanedeng.github.io/STA248_UT2018Summer/Cars93.csv) (data description [here](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/Cars93.html)). For each variable, generate what you think is the best graphical and numerical summaries. You should be able to defend your choices using the material from the lecture slides.
     - Relevant reading material from the *OpenIntro* Chapter 1; alternatively you can look at Chapter 1 of *Probability and Statistics for Engineering and the Sciences*.

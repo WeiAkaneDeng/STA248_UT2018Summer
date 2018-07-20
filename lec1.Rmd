@@ -659,7 +659,7 @@ print("mean", numpy.mean(Cars93[["Luggage.room"]]))
 
 + If the distribution is symmetric, then mean and median tend to be really close.
 
-+ On the other hand, if the mean is less or greater than the median, it could indicate a **skewed** distribution, e.g. income of household (mean $<$ median)
++ On the other hand, if the mean is less or greater than the median, it could indicate a **skewed** distribution, e.g. income of household (mean $>$ median)
 
 + Median and mean both capture the centre, but median is a more **robust** measure as it is not sensitive to **outliers** or extreme values.
 
@@ -673,13 +673,19 @@ A more formal definition of skewness:
 
 \tiny
 
+
+```{r, echo=F, cache=T}
+library(ggplot2)
+new_data <- data.frame("Rev.per.miles" = c(Cars93$Rev.per.mile, rnorm(50, 800, 1000)))
+```
+
 ```{r, fig.width=3, fig.height=3, comment=NA}
 library(ggplot2)
-ggplot(data=Cars93, aes(x=Rev.per.mile)) +
+ggplot(data=new_data, aes(x=Rev.per.miles)) +
   geom_histogram(binwidth=100, colour="black", fill="white") + 
   xlab("Engine revolutions per mile")  + 
   ggtitle("Engine revolutions \n per mile (in highest gear).")
-mean(Cars93$Rev.per.mile); median(Cars93$Rev.per.mile)
+c(mean(new_data$Rev.per.miles), median(new_data$Rev.per.miles))
 ```
 
 
