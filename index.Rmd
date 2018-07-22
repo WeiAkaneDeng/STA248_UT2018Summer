@@ -15,18 +15,21 @@ Syllabus has been updated to the current schedule.
 
 
 ### Class schedule
-+ Monday 18:00-21:00 in SS 2118 (no lecture on Monday, August 6 (Civic holiday))
++ Monday 18:00-21:00 in SS 2118 (no lecture on Monday, August 6 (Civic holiday)
 + Wednesday 18:00-21:00 in SS 2118.
 
 ### Midterm date
 + Date: **July 23rd** 
 + Duration: 18:00-21:00
 + Location: **EX300 and EX310**
++ Due to the high demand for it, [here](https://weiakanedeng.github.io/STA248_UT2018Summer/formula_page.pdf) is the first page and last a few pages of the midterm (a.k.a ``formula'' pages).
 
-
+    - I would like to emphasize again, there is really no formula in this course. I had offered to everyone who was in class that if you felt the need for something to be included on the information sheet, you can email me to have it added. And I had received only one such request, which I have included. 
+    - If you want information (no concept nor definitions) included on the final exam information sheet, please email me between July 24th (after midterm) and July 28th, and I will try to accomodate.  
 
 
 ### Lecture Slides
+
 
 + [lecture 5](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture5_sol.pdf) contains a quick review of topics learnt so far and partial solution to some of the questions.
 
