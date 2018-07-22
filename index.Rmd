@@ -33,7 +33,10 @@ Syllabus has been updated to the current schedule.
 
 + [lecture 5](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture5_sol.pdf) contains a quick review of topics learnt so far and partial solution to some of the questions.
 
-+ [lecture 4](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.Rmd) for you to look at the R/Python code chunks. **There was a typo on slide page 32 for the two-sided test p-value, which has been corrected so it is now consistent with slide page 35.** 
++ [lecture 4](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.Rmd) for you to look at the R/Python code chunks. 
+
+    - **There was a typo on slide page 32 for the two-sided test p-value, which has been corrected so it is now consistent with slide page 35.** 
+    - **There was a typo on slide page 31 for the one-sample proportion test, the proportion in the denominator should be $p$ instead of $\hat{p}$, i.e. taking the parameter value specified by the null hypothesis. The version with the $\hat{p}$ in the denominator is used when we calculate confidence interval without any known parameter value. **
 
     - Relevant readings from OpenIntro are Chapters 4 and 5; alternatively you can look at Chapters 7, 8, 9 of *Probability and Statistics for Engineering and the Sciences*.
 

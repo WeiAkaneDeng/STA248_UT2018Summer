@@ -533,9 +533,9 @@ Let $X_1, \dots, X_n$ be a **random sample** of size $n>30$ with *mean* $\mu$ an
 + $T' = \frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t(n-1)$, where $S^2 = \frac{1}{n-1}\sum (X_i-\bar{X})^2$
 
 
-Let $X_1, \dots, X_n \in \{0,1\}$ be a **random sample** of size $n$. The *proportion* estimator is $\hat{p}=\sum_{i=1}^nX_i/n$, $np>20$ and consider the test statistic:
+Let $X_1, \dots, X_n \in \{0,1\}$ be a **random sample** of size $n$. The *proportion* estimator is $\hat{p}=\sum_{i=1}^nX_i/n$, $n\hat{p}>20$ and consider the test statistic:
 
-+ $Y = \frac{\hat{p} - p}{\sqrt{\hat{p}(1-\hat{p})/n}} \sim \mathcal{N}(0,1)$ (approximated)
++ $Y = \frac{\hat{p} - p}{\sqrt{{p}(1-{p})/n}} \sim \mathcal{N}(0,1)$ (approximated)
 
 
 # Testing about $\mu$ or $p$
