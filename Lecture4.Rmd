@@ -265,7 +265,7 @@ ggplot(plot_main, aes(values))  +
     - $-\Phi^{-1}(\alpha/2) > Q > \Phi^{-1}(\alpha/2)$
     - Solving the inequality for $p$ we have
     \[
-     \frac{\hat{p}+\Phi^{-1}(\alpha/2)^2/2n}{1+\Phi^{-1}(\alpha/2)^2/n} \pm \Phi^{-1}(\alpha/2)\frac{\sqrt{\hat{p}(1-\hat{p}/n + \Phi^{-1}(\alpha/2)^2/4n^2)}}{1+\Phi^{-1}(\alpha/2)^2/n}
+     \frac{\hat{p}+\Phi^{-1}(\alpha/2)^2/2n}{1+\Phi^{-1}(\alpha/2)^2/n} \pm \Phi^{-1}(\alpha/2)\frac{\sqrt{\hat{p}(1-\hat{p})/n + \Phi^{-1}(\alpha/2)^2/4n^2}}{1+\Phi^{-1}(\alpha/2)^2/n}
     \]
 
 
@@ -466,7 +466,7 @@ Let $X_1, \dots, X_n$ denote a random sample from a normal population distributi
     \text{P}_{X}(Z < \Phi^{-1}(\alpha)) = \text{P}(\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} < \Phi^{-1}(\alpha)) = \alpha
     \]
     - Again, since $\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \sim \mathcal{N}(0, 1)$
-    - $\frac{\bar{X}-\mu_o}{\sigma/\sqrt{n}} < 2.33$ under the null hypothesis
+    - $\frac{\bar{X}-\mu_o}{\sigma/\sqrt{n}} < -2.33$ under the null hypothesis
 
 
 
