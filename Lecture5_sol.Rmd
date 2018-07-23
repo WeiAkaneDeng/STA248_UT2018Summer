@@ -612,11 +612,13 @@ Let $X_1, \dots, X_n$ denote a random sample from a normal population distributi
 
 + Step 1: give the sampling distribution of $\bar{X} \sim \mathcal{N}(\mu, \sigma^2/n)$.
 
-+ Step 2: The rejection region is where the observed test statistic is more extreme than expected at $\alpha$
++ Step 2: The rejection region is where the observed test statistic is more extreme than expected at the significance level $\alpha$
 
 \[
-\text{P}_X(\mu < \mu_o) = \text{P}(\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \boldsymbol{>} \frac{\bar{X} - \mu_o}{\sigma/\sqrt{n}}) = \alpha
+\text{P}_X(Z < \Phi^{-1}(\alpha)) = \text{P}(\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \boldsymbol{<} \Phi^{-1}(\alpha)) = \alpha
 \]
+
+Since under the null $\mu = \mu_o$, $\bar{X} < \mu + \Phi^{-1}(\alpha)\sigma/\sqrt{n}$ can be taken to be $\bar{X} < \mu_o + \Phi^{-1}(\alpha)\sigma/\sqrt{n}$.
 
 
 
