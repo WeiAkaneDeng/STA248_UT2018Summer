@@ -33,6 +33,8 @@ Syllabus has been updated to the current schedule.
 
 + [lecture 5](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture5_sol.pdf) contains a quick review of topics learnt so far and partial solution to some of the questions.
 
+    - Typo on page 38, Step 2: the second equality has the inequality sign reversed, i.e. $>$ instead of $<$ because of multiplying each side by $-1$.
+    
 + [lecture 4](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.pdf) and rmarkdown document to generate the slides can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.Rmd) for you to look at the R/Python code chunks. 
 
     - **There was a typo on slide page 32 for the two-sided test p-value, which has been corrected so it is now consistent with slide page 35.** 
