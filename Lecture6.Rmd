@@ -421,7 +421,7 @@ is $\bar{X} > \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/n$ and $\bar{X} < \mu_o - \Phi
 \beta(\theta') &= \text{P}(\mu_o - \Phi^{-1}(1-\alpha)\sigma/n < \bar{X} <  \mu_o + \Phi^{-1}(1-\alpha)\sigma/n | \theta = \theta')\\
 &= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha) < \frac{\bar{X}-\mu'}{\sigma/n} <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha))\\
 &= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha) < Z <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha))\\
-& = \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha))\Big)- \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} - \Phi^{-1}(1-\alpha))\Big)
+& = \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha)\Big)- \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} - \Phi^{-1}(1-\alpha)\Big)
 \end{align}
 
 From this expression, can you decrease the type II error for a particular $\mu'$?
@@ -570,7 +570,7 @@ The statistical power of rejecting the null with a one sample **t-test** for a p
 1-\beta(\theta') &= 1-\text{P}(\bar{X} < \mu_o  + \Phi^{-1}(1-\alpha/2)S/n | \mu = \mu')\\
 &= 1-\text{P}(\frac{\bar{X}-\mu'}{S/n} < \frac{\mu_o -\mu'}{S/n} + \Phi^{-1}(1-\alpha/2) )\\
 &= 1-\text{P}(Z <  \frac{\mu_o - \mu'}{S/n} + \Phi^{-1}(1-\alpha/2))\\
-& = 1- \Phi\Big(\frac{\mu_o - \mu'}{S/n} + \Phi^{-1}(1-\alpha/2))\Big)
+& = 1- \Phi\Big(\frac{\mu_o - \mu'}{S/n} + \Phi^{-1}(1-\alpha/2)\Big)
 \end{align}
 
 From this expression, can you come up with ways to increase the statistical power?
