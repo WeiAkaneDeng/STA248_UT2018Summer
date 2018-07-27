@@ -30,7 +30,7 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 + Due to the high demand for it, [here](https://weiakanedeng.github.io/STA248_UT2018Summer/formula_page.pdf) is the first page and last a few pages of the midterm (a.k.a ``formula'' pages).
 + For those of you who missed the midterm due to legitimate reason, please check the faculty's policies regarding a missed test/exam [here](http://www.artsci.utoronto.ca/current/petitions/common) and [here](http://calendar.artsci.utoronto.ca/Rules_&_Regulations.html#Appeals%20and%20Petitions). Once your absence has been justified, your final exam will count towards 90% of your final grade.
 + **Midterm marks are now up on portal**
-+ The class average is 46 and class median is 50.5. [Here](https://weiakanedeng.github.io/STA248_UT2018Summer/FakeMarks.png) is a parameteric bootstrap inspired distribution of a hypothetical class marks assuming the marks are normally distributed and the parameters were estimated from the actual marks.
++ The class average is 46 and class median is 50.5. [Here](https://weiakanedeng.github.io/STA248_UT2018Summer/FakeMarks.png.pdf) is a parameteric bootstrap inspired distribution of a hypothetical class marks assuming the marks are normally distributed and the parameters were estimated from the actual marks.
 
 ### Lecture Slides
 
