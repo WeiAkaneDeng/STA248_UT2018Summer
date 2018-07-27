@@ -2,10 +2,10 @@
 title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 ---
 
-**You can find up to date information here. Please check regularly for new items**
 
+**A slack group has been made for this class, you are welcome to join and discuss with each other** https://join.slack.com/t/sta248-2018-summer/shared_invite/enQtNDA1MzY3MDQ5ODU3LTMwNGM3ZTY4ZDBkZDQ2NWJiOGU3YmZiZDJkNTU5MmExOTkzZjE0MDNiN2M3YmU0MzY2OTRlMjljYTIxNDE0Njg or the shorten version: https://goo.gl/4UQms5
 
-**A slack group has been made for this class, you are welcome to join and discuss with each other** https://sta248-2018-summer.slack.com/
+**Midterm marks are now up on portal**
 
 ### Course Instructor: 
 + [Wei Q. Deng](wei.deng@mail.utoronto.ca)
@@ -41,10 +41,10 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 
     - Relevant readings from OpenIntro is Chapter 7; alternatively you can look at Chapter 12 of *Probability and Statistics for Engineering and the Sciences*.
 
-+ lecture 7 will be a review of midterm solutions (Q3-Q5). Solutions will **NOT** be posted. You can pick up the midterm from your TA Tianle who will be covering me Monday. 
 
-    - Any request for remark must be send to me via email by August 5th.
-    - Tests written in pencil will not be remarked after the midterm review, please 
+    - Tests written in pencil will not be remarked after the midterm review. 
+    - If you plan to request a remark, please write a brief justification for why you deserve the marks. 
+    - Any request for a remark should be send to me via email by **August 5th**.
 
 + [lecture 6](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture6.pdf) and the rmarkdown file [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.Rmd) cover the remaining topics in hypothesis testing such as power and type I and II error, as well as some simulation examples. We also reviewed the first two questions on the midterm.
 
