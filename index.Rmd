@@ -41,6 +41,7 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 
     - Relevant readings from OpenIntro is Chapter 7; alternatively you can look at Chapter 12 of *Probability and Statistics for Engineering and the Sciences*.
 
++ lecture 7 will be a review of midterm solutions (Q3-Q5). Solutions will **NOT** be posted. You can pick up the midterm from your TA Tianle who will be covering for me Monday. 
 
     - Tests written in pencil will not be remarked after the midterm review. 
     - If you plan to request a remark, please write a brief justification for why you deserve the marks. 
