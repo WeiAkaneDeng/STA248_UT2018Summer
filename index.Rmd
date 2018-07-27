@@ -5,18 +5,12 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 
 **A slack group has been made for this class, you are welcome to join and discuss with each other** https://join.slack.com/t/sta248-2018-summer/shared_invite/enQtNDA1MzY3MDQ5ODU3LTMwNGM3ZTY4ZDBkZDQ2NWJiOGU3YmZiZDJkNTU5MmExOTkzZjE0MDNiN2M3YmU0MzY2OTRlMjljYTIxNDE0Njg or the shorten version: https://goo.gl/4UQms5
 
-**Midterm marks are now up on portal**
 
 ### Course Instructor: 
 + [Wei Q. Deng](wei.deng@mail.utoronto.ca)
 + Office hours: Monday 4-6pm, Wednesday 4-6pm (from second week)
 + Office hour location: SS623B (TA office in the basement of Sidney Smith - starting July 9th)
-+ **Office hour for next week July 30-August 2nd has been cancelled, please ask questions during lecture or email me during this time**
-
-
-### Class schedule
-+ Monday 18:00-21:00 in SS 2118 (no lecture on August 6, Civic holiday)
-+ Wednesday 18:00-21:00 in SS 2118.
++ **Office hour for next week July 30-August 2nd has been cancelled, please resolve your questions in lecture or email me during this time**
 
 
 ### Final exam
@@ -27,6 +21,16 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 + If you want information (no concept nor definitions) included on the final exam information sheet, please email me between July 24th (after midterm) and July 28th, and I will try to accommodate.  
 + Review lecture: August 13th 6-9pm, please bring your questions to class and be prepared to work.
 
+
+
+### Midterm date
++ Date: **July 23rd** 
++ Duration: 18:00-21:00
++ Location: **EX300 and EX310**
++ Due to the high demand for it, [here](https://weiakanedeng.github.io/STA248_UT2018Summer/formula_page.pdf) is the first page and last a few pages of the midterm (a.k.a ``formula'' pages).
++ For those of you who missed the midterm due to legitimate reason, please check the faculty's policies regarding a missed test/exam [here](http://www.artsci.utoronto.ca/current/petitions/common) and [here](http://calendar.artsci.utoronto.ca/Rules_&_Regulations.html#Appeals%20and%20Petitions). Once your absence has been justified, your final exam will count towards 90% of your final grade.
++ **Midterm marks are now up on portal**
++ The class average is 46 and class median is 50.5. [Here](https://weiakanedeng.github.io/STA248_UT2018Summer/FakeMarks.png) is a parameteric bootstrap inspired distribution of a hypothetical class marks assuming the marks are normally distributed and the parameters were estimated from the actual marks.
 
 ### Lecture Slides
 
@@ -121,11 +125,7 @@ The deadline for the completion of two modules is set for **August 5th**.
 
 
 
-### Midterm date
-+ Date: **July 23rd** 
-+ Duration: 18:00-21:00
-+ Location: **EX300 and EX310**
-+ Due to the high demand for it, [here](https://weiakanedeng.github.io/STA248_UT2018Summer/formula_page.pdf) is the first page and last a few pages of the midterm (a.k.a ``formula'' pages).
-+ For those of you who missed the midterm due to legitimate reason, please check the faculty's policies regarding a missed test/exam [here](http://www.artsci.utoronto.ca/current/petitions/common) and [here](http://calendar.artsci.utoronto.ca/Rules_&_Regulations.html#Appeals%20and%20Petitions). Once your absence has been justified, your final exam will count towards 90% of your final grade.
-
+### Class schedule
++ Monday 18:00-21:00 in SS 2118 (no lecture on August 6, Civic holiday)
++ Wednesday 18:00-21:00 in SS 2118.
 
