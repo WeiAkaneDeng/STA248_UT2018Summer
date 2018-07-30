@@ -418,14 +418,14 @@ is $\bar{X} > \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/n$ and $\bar{X} < \mu_o - \Phi
  The type II error for a particular $\mu' \ne \mu_o$ is:
 
 \begin{align}
-\beta(\theta') &= \text{P}(\mu_o - \Phi^{-1}(1-\alpha)\sigma/n < \bar{X} <  \mu_o + \Phi^{-1}(1-\alpha)\sigma/n | \theta = \theta')\\
-&= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha) < \frac{\bar{X}-\mu'}{\sigma/n} <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha))\\
-&= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha) < Z <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha))\\
-& = \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha)\Big)- \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} - \Phi^{-1}(1-\alpha)\Big)
+\beta(\theta') &= \text{P}(\mu_o - \Phi^{-1}(1-\alpha/2)\sigma/n < \bar{X} <  \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/n | \theta = \theta')\\
+&= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha/2) < \frac{\bar{X}-\mu'}{\sigma/n} <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha/2))\\
+&= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha/2) < Z <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha/2))\\
+& = \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha/2)\Big)- \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} - \Phi^{-1}(1-\alpha/2)\Big)
 \end{align}
 
 From this expression, can you decrease the type II error for a particular $\mu'$?
-
+\textcolor{red}{(Notice that I had corrected all $\alpha$ to $\alpha/2$ since this is clearly a two-sided tests as we do not know whether $\mu' > \mu$ or  $\mu' < \mu$)}
 
 
 # Type II error simulation setup
@@ -567,10 +567,10 @@ How do we increase the statistical power by varying these values?
 The statistical power of rejecting the null with a one sample **t-test** for a particular $\mu' > \mu_o$ is:
 
 \begin{align}
-1-\beta(\theta') &= 1-\text{P}(\bar{X} < \mu_o  + \Phi^{-1}(1-\alpha/2)S/n | \mu = \mu')\\
-&= 1-\text{P}(\frac{\bar{X}-\mu'}{S/n} < \frac{\mu_o -\mu'}{S/n} + \Phi^{-1}(1-\alpha/2) )\\
-&= 1-\text{P}(Z <  \frac{\mu_o - \mu'}{S/n} + \Phi^{-1}(1-\alpha/2))\\
-& = 1- \Phi\Big(\frac{\mu_o - \mu'}{S/n} + \Phi^{-1}(1-\alpha/2)\Big)
+1-\beta(\theta') &= 1-\text{P}(\bar{X} < \mu_o  - \Phi^{-1}(1-\alpha/2)S/n | \mu = \mu')\\
+&= 1-\text{P}(\frac{\bar{X}-\mu'}{S/n} < \frac{\mu_o -\mu'}{S/n} - \Phi^{-1}(1-\alpha/2) )\\
+&= 1-\text{P}(Z <  \frac{\mu_o - \mu'}{S/n} - \Phi^{-1}(1-\alpha/2))\\
+& = 1- \Phi\Big(\frac{\mu_o - \mu'}{S/n} - \Phi^{-1}(1-\alpha/2)\Big)
 \end{align}
 
 From this expression, can you come up with ways to increase the statistical power?
