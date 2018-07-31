@@ -164,8 +164,8 @@ A random sample of $n=100$ high school students are drawn from all high school s
 \item Interval estimators
 \begin{itemize}
 \item confidence interval (CI)
-\item CI for $\bar{X}$ when $\sigma^2$ is known
-\item CI for $\bar{X}$ when $\sigma^2$ is not known
+\item CI for $\mu$ when $\sigma^2$ is known
+\item CI for $\mu$ when $\sigma^2$ is not known
 \item CI for $\sigma^2$
 \item CI for $p$ the proportion of success in Binomial
 \end{itemize}
@@ -563,8 +563,8 @@ Cons:
 
 \begin{itemize}
 \item Confidence Intervals (CI)
-\item CI for $\bar{X}$ when $\sigma^2$ is known
-\item CI for $\bar{X}$ when $\sigma^2$ is not known
+\item CI for $\mu$ when $\sigma^2$ is known
+\item CI for $\mu$ when $\sigma^2$ is not known
 \item CI for $\sigma^2$
 \item CI for $p$ the proportion of success in Binomial
 \end{itemize}
@@ -626,7 +626,7 @@ Cons:
 
 
 
-# Confidence interval for $\bar{X}$
+# Confidence interval for $\mu$
 
 What do we know about $\bar{X}$?
 
@@ -649,7 +649,7 @@ What do we know about $\bar{X}$?
 # Visualize the sampling distribution of $\bar{X}$ under normality
 
 ```{r, echo=F, message=F, warning=F}
-curve(dnorm(x, 0,0.5), -3,3, xaxt="n", xlab="", yaxt="n")
+curve(dnorm(x, 0,0.5), -3,3, xaxt="n", xlab="", yaxt="n", ylab="")
 curve(x*0, add=T)
 lines(c(qnorm(0.5, 0, 0.5), qnorm(0.5, 0, 0.5)),c(0, dnorm(qnorm(0.5, 0, 0.5), 0, 0.5)), lty=2)
 lines(c(qnorm(0.75, 0, 0.5), qnorm(0.75, 0, 0.5)),c(0, dnorm(qnorm(0.75, 0, 0.5), 0, 0.5)))
@@ -679,7 +679,7 @@ M_{\bar{X}}(t) &= \text{E}(e^{t\bar{X}}) \\
 
 
 
-# CI for $\bar{X}$ when $\sigma^2$ is known
+# CI for $\mu$ when $\sigma^2$ is known
 
 Since $\bar{X} \sim \mathcal{N}(\mu, \frac{\sigma^2}{n})$, we can define
 \[
@@ -696,7 +696,7 @@ where $Z$ is a standard normal random variable.
 \end{align}
 
 
-# CI for $\bar{X}$ when $\sigma^2$ is known
+# CI for $\mu$ when $\sigma^2$ is known
 
 + We know the sampling distribution of $\bar{X}$ is centered at $\mu$, to recover the 95\% confidence interval (between 0.975 quantile and 0.025 quantile), solve for 
 
@@ -706,10 +706,10 @@ where $Z$ is a standard normal random variable.
 + The upper end point is $u = 1.96\sigma/\sqrt{n} + \bar{X}$, while the lower end point is $l = -1.96\sigma/\sqrt{n} + \bar{X}$
 
 
-# CI for $\bar{X}$ when $\sigma^2$ is known (cont'd)
+# CI for $\mu$ when $\sigma^2$ is known (cont'd)
 
 
-The 95\% confidence interval of $\bar{X}$ under normality with known $\sigma^2$ is $(\bar{X}-1.96\sigma/\sqrt{n}, \bar{X}+1.96\sigma/\sqrt{n})$ or $\bar{X}\pm 1.96\sigma/\sqrt{n}$.
+The 95\% confidence interval of $\mu$ under normality with known $\sigma^2$ is $(\bar{X}-1.96\sigma/\sqrt{n}, \bar{X}+1.96\sigma/\sqrt{n})$ or $\bar{X}\pm 1.96\sigma/\sqrt{n}$.
 
 
 + Can you repeat the calculation to find the 99\% CI or the 90\% CI?
@@ -749,7 +749,7 @@ include_graphics("prac1_lec3.png")
 
 
 
-# CI for $\bar{X}$ when $\sigma^2$ is not known
+# CI for $\mu$ when $\sigma^2$ is not known
 
 We still have $\bar{X} \sim \mathcal{N}(\mu, \frac{\sigma^2}{n})$, but since now $\sigma$ is not known, we can not rely on it to give the sampling distribution.
 
@@ -818,7 +818,7 @@ legend("topright", bty="n", c(paste("d.f =", c(2,5,10,100)), "norm"), lty=1, col
 ```
 
 
-# CI for $\bar{X}$ when $\sigma^2$ is not known
+# CI for $\mu$ when $\sigma^2$ is not known
 
 + We want to find $l$ and $u$ such that $\text{Pr}_{\bar{T}}(l<\mu<u) = 0.95$ under the sampling distribution of $\bar{T}$. 
 
@@ -829,7 +829,7 @@ legend("topright", bty="n", c(paste("d.f =", c(2,5,10,100)), "norm"), lty=1, col
  
 
 
-# CI for $\bar{X}$ when $\sigma^2$ is not known
+# CI for $\mu$ when $\sigma^2$ is not known
 
 
 \begin{align}
@@ -946,10 +946,6 @@ Solution will be given at the next class.
 + For $\bar{X}$ from non-normal samples, we can invoke the CLT when $n > 30$, the CI will be approximated rather than exact.
 
 + Know relationships among $\alpha$ (confidence level), width of the CI, sample size ($n$).
-
-
-
-
 
 
 
