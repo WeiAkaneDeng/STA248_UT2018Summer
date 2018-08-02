@@ -277,7 +277,7 @@ include_graphics("h0ha.pdf")
 ```
 
 - Type I error = P(reject $H_o|H_o$ is true).
-- Type II error = P(fail to rejct $H_o|H_a$ is false )
+- Type II error = P(fail to rejct $H_o|H_o$ is false )
 - Significance level $\alpha$: maximum allowable probability of making type I error (usually 5\% or 1\%)
 
 

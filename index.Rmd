@@ -41,8 +41,9 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
     - Relevant readings from OpenIntro is Chapter 7; alternatively you can look at Chapter 12 of *Probability and Statistics for Engineering and the Sciences*.
 
 
-+ lecture 8 covers the introduction to linear regression with connection to supervised learning and examples. The lecture will take 2 hours and covered by your TA Tianle.
++ [lecture 8](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture7.pdf) covers the introduction to linear regression with connection to supervised learning and examples. The lecture will take 2 hours and covered by your TA Tianle.
 
+    - The python notebook files are [here](https://weiakanedeng.github.io/STA248_UT2018Summer/linear_regression.ipynb) and [here](https://weiakanedeng.github.io/STA248_UT2018Summer/linear_regression2.ipynb).
     - Relevant readings from OpenIntro is Chapter 7; alternatively you can look at Chapter 12 of *Probability and Statistics for Engineering and the Sciences*.
 
 + lecture 7 will be a review of midterm solutions (Q3-Q5). Solutions will **NOT** be posted. You can pick up the midterm from your TA Tianle who will be covering for me Monday. 
