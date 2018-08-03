@@ -567,11 +567,12 @@ How do we increase the statistical power by varying these values?
 The statistical power of rejecting the null with a one sample **t-test** for a particular $\mu' > \mu_o$ is:
 
 \begin{align}
-1-\beta(\theta') &= 1-\text{P}(\bar{X} < \mu_o  - \Phi^{-1}(1-\alpha/2)S/n | \mu = \mu')\\
-&= 1-\text{P}(\frac{\bar{X}-\mu'}{S/n} < \frac{\mu_o -\mu'}{S/n} - \Phi^{-1}(1-\alpha/2) )\\
-&= 1-\text{P}(Z <  \frac{\mu_o - \mu'}{S/n} - \Phi^{-1}(1-\alpha/2))\\
-& = 1- \Phi\Big(\frac{\mu_o - \mu'}{S/n} - \Phi^{-1}(1-\alpha/2)\Big)
+1-\beta(\theta') &= 1-\text{P}(\bar{X} < \mu_o  - t_{(1-\alpha/2, n-1)} S/n | \mu = \mu')\\
+&= 1-\text{P}(\frac{\bar{X}-\mu'}{S/n} < \frac{\mu_o -\mu'}{S/n} - t_{(1-\alpha/2, n-1)} )\\
+&= 1-\text{P}(T <  \frac{\mu_o - \mu'}{S/n} - t_{(1-\alpha/2, n-1)})\\
 \end{align}
+
+where $t_{(1-\alpha/2, n-1)}$ is the quantile value for a t-distributed random variable with degrees of freedom $n-1$. 
 
 From this expression, can you come up with ways to increase the statistical power?
 
@@ -588,6 +589,9 @@ From this expression, can you come up with ways to increase the statistical powe
 + Everything else fixed, if $n$ **increases**, then the quantile decreases, the power **increases**.
 
 
+
+
+
 # An example of Statistical power for the t-test (one-sided)
 
 Suppose the null hypothesis is $\theta = \theta_o$ while a particular value of the alternative is $\theta'$. The statistical power of rejecting $\theta = \theta_o$ while assuming $\theta =\theta'$ is denoted by $\beta(\theta')$. 
@@ -595,6 +599,9 @@ Suppose the null hypothesis is $\theta = \theta_o$ while a particular value of t
 + Now we have $\mu' < \mu_o$
 
 + Can you replicate the calculation above and conclude under what circumstances, the power would increase?
+
+
+
 
 
 # Statistical power simulation 
