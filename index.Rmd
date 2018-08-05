@@ -34,9 +34,9 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 
 ### Lecture Slides
 
-+ lecture 10 (August 13th) is a review lecture of all topics covered. Please bring any questions to the class.
++ [lecture 10](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture9_sol.pdf) (August 13th) is a review lecture of all topics covered. Please bring any questions to the class.
 
-+ lecture 9 (August 8th) covers the introduction to linear regression with a little bit of theory in connection to hypothesis testing as well as confidence intervals. 
++ [lecture 9] (August 8th) covers the introduction to linear regression with a little bit of theory in connection to hypothesis testing as well as confidence intervals. 
 
     - Relevant readings from OpenIntro is Chapter 7; alternatively you can look at Chapter 12 of *Probability and Statistics for Engineering and the Sciences*.
 
