@@ -44,8 +44,9 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
     - If you plan to request a remark, please write a brief justification for why you deserve the marks. 
     - Any request for a remark should be send to me via email by **August 5th**.
 
-+ [lecture 6](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture6.pdf) and the rmarkdown file [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture4.Rmd) cover the remaining topics in hypothesis testing such as power and type I and II error, as well as some simulation examples. We also reviewed the first two questions on the midterm.
++ [lecture 6](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture6.pdf) and the rmarkdown file [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture6.Rmd) cover the remaining topics in hypothesis testing such as power and type I and II error, as well as some simulation examples. We also reviewed the first two questions on the midterm.
 
+    - Note the change on slide page 36 (power calculation for t-test will not be on the final exam).
     - Relevant readings from OpenIntro are Chapters 4.3, 5.4, and 5.5; alternatively you can look at Chapter 8 of *Probability and Statistics for Engineering and the Sciences*.
 
 

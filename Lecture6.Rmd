@@ -553,7 +553,7 @@ include_graphics("stat_power_ggplot.png")
 
 # Statistical power, type I error, type II error and effect size
 
-Suppose the null hypothesis is $\theta = \theta_o$ while a particular value of the alternative is $\theta'$. The statistical power of rejecting $\theta = \theta_o$ while assuming $\theta =\theta'$ is denoted by $\beta(\theta')$. 
+Suppose the null hypothesis is $\theta = \theta_o$ while a particular value of the alternative is $\theta'$. The statistical power of rejecting $\theta = \theta_o$ while assuming $\theta =\theta'$ is $1-\beta(\theta')$. 
 
 + Denote $\delta = \theta_o - \theta'$
 + The significance level is at $\alpha$ 
@@ -562,7 +562,7 @@ Suppose the null hypothesis is $\theta = \theta_o$ while a particular value of t
 How do we increase the statistical power by varying these values?
 
 
-# An example of Statistical power for the t-test (two-sided)
+# (Not tested) An example of Statistical power for the t-test (two-sided)
 
 The statistical power of rejecting the null with a one sample **t-test** for a particular $\mu' > \mu_o$ is:
 
@@ -574,11 +574,14 @@ The statistical power of rejecting the null with a one sample **t-test** for a p
 
 where $t_{(1-\alpha/2, n-1)}$ is the quantile value for a t-distributed random variable with degrees of freedom $n-1$. 
 
-From this expression, can you come up with ways to increase the statistical power?
+\textcolor{red}{Note that since I do not give a close form representation or table for the quantile of t-quantile under a mean difference, you will not be required to actually calculate the power for a two-sided t-test.}
+
 
 
 
 # An example of Statistical power for the t-test
+
+From the expression above, can you come up with ways to increase the statistical power?
 
 + Notice that when $\mu_o = \mu'$, power is equal to $\alpha$ (i.e. power is always greater or equal to $\alpha$)
 
