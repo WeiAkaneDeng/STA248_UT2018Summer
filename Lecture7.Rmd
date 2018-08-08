@@ -1,0 +1,773 @@
+---
+title: "Introduction to linear regression"
+author: "Wei Q. Deng (Presented by Tianle Chen)"
+date: "August 1st 2018"
+output:
+  beamer_presentation:
+    includes:     
+      in_header: wei-beamer-header-simple.txt
+    incremental: no
+  ioslides_presentation:
+    incremental: yes
+  slidy_presentation:
+    incremental: yes
+subtitle: (Week 05 lecture notes)
+fontsize: 10pt
+---
+
+
+```{r, setup, include=FALSE}
+require(mosaic)   # Load additional packages here
+library(knitr)
+#library("devtools")
+#devtools::install_github("rstudio/reticulate")
+library(reticulate)
+library(ggplot2)
+library(MASS)
+library(dplyr)
+use_python("/usr/local/bin/python3")
+py_config()
+use_virtualenv("r-reticulate")
+knitr::knit_engines$set(python = reticulate::eng_python)
+py_available(TRUE)
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+trellis.par.set(theme=theme.mosaic()) # change default color scheme for lattice
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+```
+
+
+
+
+# Topics covered in this lecture
+
+\begin{itemize}
+\item Machine learning the probabilistic way
+\item Supervised learning problems
+\item Regression  
+\item Case studies in R and Python
+\end{itemize}
+
+
+
+# Why and what is machine learning ? 
+
++ We are in the era of **big data**: data of massive size and complex nature
+
+    - 40 billion indexed web pages
+    - the entire genome of thousands of individuals
+    - more than 160 million credit card transactions per hour
+    
++ Machine learning provides **automated methods** to process and analyze data
+
+    - automatically detect pattern in data
+    - use the pattern to predict future data
+    - use the pattern to inform decision making
+    
++ Many machine learning approaches rely on tools of probability theory
+
+
+# Types of machine learning
+
++ Supervised learning (or predictive learning)
+
+    - classification (output is categorical)
+    - regression (output is continuous)
+
++ Unsupervised learning (or descriptive learning)
+
+    - clustering
+    - dimension reduction
+    - graph structure
+    - matrix completion
+
++ Reinforcement learning (learning to make decisions)
+
+
+
+#  A general setting for supervised learning problems
+
+Suppose we have some \textcolor{blue}{inputs} $X$ and some \textcolor{blue}{outputs} $y$, the goal is to learn a mapping using a set of labelled set of input-output pairs $\{(X_i, y_i)\}_{i=1}^n$:
+
++ also called a **training** dataset
+
+To verify the quality of this mapping, we often use
+
++ a **testing** data set containing (sometimes absent) just the \textcolor{blue}{inputs} $\mathbf{X}_\text{test}$
+
+The established mapping provides
+
++ a model that describes the relationship between the inputs and outputs
+
++ a model that can be used to predict outputs in the testing data
+
+
+
+# Some examples of classification problems 
+
+When the outputs are categorical, these are known as the **classification** or **pattern recognition** problems:
+
++ Handwritten digit recognition: postal offices process your letters automatically.
+
++ How likely are you to get a new credit card approved?
+
++ Identifying faces from images.
+
+
+# handwritten digit recognition
+
+```{r  out.width = "95%", echo=F}
+include_graphics("MnistExamples.png")
+```
+
+# handwritten digit recognition
+
++ the [data](http://yann.lecun.com/exdb/mnist/index.html) consist of 
+
+    - images of handwritten digits from 0 to 9
+    - labels identify by a human
+
++ the goal is to process images automatically without humans hand labelling
+
++ the learning algorithm need to achieve "near-human" performance
+
+
+# credit card approval
+
++ given attributes such as 
+
+    - age
+    - past credit history
+    - current financial status
+    - number of credit cards owned
+    - household income, etc.
+
++ Credit card applications either accepted (+) or rejected (-)
+
+
+# credit card approval
+
++ Data can be found [here](http://archive.ics.uci.edu/ml/datasets/credit+approval)
+
++ Some analysis in R [here](http://rstudio-pubs-static.s3.amazonaws.com/73039_9946de135c0a49daa7a0a9eda4a67a72.html)
+
++ Some analysis in Python [here](https://github.com/shulmanm/crxML)
+
+
+
+
+
+
+# Some examples of regression problems 
+
+When the outputs are continuous or ordinal, these are known as the **regression** problems:
+
++ How much can your neighbour's house go for in a market like this?
+
++ Predict the trading value of the TSX index tomorrow or in a month given the current market condition and other available information.
+
++ Predict the age of a current subscriber of the Globe and Mail based on their browsing history.
+
++ Predict the amount of pollutant in a given postal code area with weather data, traffic condition and information on industrial activities in the area and nearby.
+
+
+
+# house price prediction
+
+```{r  out.width = "90%", echo=F}
+include_graphics("realtorca.png")
+```
+
+
+# house price prediction
+
++ the listing price of all other houses in your neigbourhood is public (realtor.ca) 
+
++ a number of factors influence the listing price in your neighbourhood
+
+    - house types (detached, semi-detached, etc.)
+    - living space (square feet)
+    - number of bedrooms
+    - number of bathrooms
+    - distance to a good public school
+    - mortgage policies 
+    - availability of inventory
+    - overall desirability of the neighbourhood
+    - other amendities nearby
+
++ How much should your neighbour list their house for in this market?
+
+
+
+
+
+# Model TSX index
+
+```{r  out.width = "90%", echo=F}
+include_graphics("TSX.png")
+```
+
+# Model TSX index
+
++ Index Characteristics such as constituents
+
++ a number of economic factors influence the index
+
+    - labor costs
+    - interest rates
+    - government policy
+    - taxes
+    - etc.
+
++ recent news or economic developments 
+
++ Can you provide a one-day or one-month forecast for the TSX composite index? 
+
+
+
+
+
+----
+<!-- <!-- add new slide without header --> 
+\begin{center} 
+\textcolor{blue}{  
+  \Large{How to approach these problems?} 
+ }
+\end{center} 
+
+
+# What does data look like?
+
+For the simplest case, we look at a dataset with one input vector. 
+
+i             | X           |Y
+------------- | ----------- | -----------
+1|3.2             |6.95
+2|1.5             |5.22
+3|2.4             |6.46
+4|3.2             |7.03
+5|5.4             |9.71
+6|5.5             |9.67
+7|6.1             |12.69
+8|5.7             |10.85
+9|2.8             |5.21
+10|3.9             |7.82
+
+For example, the third observation is $(X_3,Y_3)=(2.4,6.46)$. For real data, usually you don't have the index $i$ column as given in the table. 
+
+
+# Visualize the data with a scatterplot
+
+```{r, echo=F}
+X = c(3.2, 1.5, 2.4, 3.2, 5.4, 5.5, 6.1, 5.7, 2.8, 3.9)
+Y = c(6.95, 5.22, 6.46, 7.03, 9.71, 9.67, 12.69, 10.85, 5.21, 7.82)
+library(ggplot2)
+library(dplyr)
+dat = data.frame(X, Y)
+
+dist1 <- dat %>% 
+  mutate(
+    dodge = rep(c(-1, 0, 1) / 20, ceiling(dim(dat)[1]/3))[1:10],
+    x1 = X + dodge,
+    pred = lm(Y~X, data=dat)$coef[1] + x1 * lm(Y~X, data=dat)$coef[2], 
+    Y = Y)
+
+ggplot(dist1, aes(x1, Y)) + geom_abline(intercept = lm(Y~X, data=dat)$coef[1], slope = lm(Y~X, data=dat)$coef[2], color = "grey40") + geom_point(color = "grey40") + geom_linerange(aes(ymin = Y, ymax = pred), color = "#3366FF")
+```
+
+# Observing the scatterplot
+
++ Most data seem to fall near a line
+
++ For bigger values of $X$, $Y$ seems to be bigger as well 
+
++ In other words, $X$ and $Y$ seem to be positively related
+
++ How can we find the line that "best" describes the relationship between $X$ and $Y$?
+
+
+
+# A simple linear regression
+
++ the output: an **outcome** variable $Y$
+
++ one input: a **predictor** variable $X$
+
++ We want to find a simple linear function of $X=(x_1, \dots, x_n)$ that approximates $Y = (y_1, \dots, y_n)$:
+
+    - A simple linear function has the form $f(X) = a + bX$
+    - "best" fit for a data point ($i$) is measured by a small distance $r_i = y_i - f(x_i)$
+    - How do we aggregate the residuals ($r_i$) to find the line of best fit?
+    
++ **Least squares method**
+\[
+\text{argmin}_{a, b} \sum_{i=1}^n r_i^2 = \text{argmin}_{a, b} \sum_{i=1}^n(y_i - a - bx_i)^2
+\]
+
+
+# Solving the least squares problem
+
+\[
+\frac{\partial \sum_{i=1}^n r_i^2}{\partial a} = 2 \sum_{i=1}^n r_i \frac{\partial r_i}{\partial a} = 0
+\]
+and 
+\[
+\frac{\partial \sum_{i=1}^n r_i^2}{\partial b} = 2 \sum_{i=1}^n r_i \frac{\partial r_i}{\partial b} = 0
+\]
+
+Plug in $r_i = y_i - f(x_i) = y_i - a - bx_i$ and solve the two equations simultaneiously to obtain the least squares solutions.
+
+\[
+\hat{a} = \bar{y} - \hat{b} \bar{x}
+\]
+and 
+\[
+\hat{b} = \frac{\sum_{i=1}^n x_i y_i - \frac{1}{n}\sum_{i=1}^nx_i\sum_{i=1}^ny_i}{\sum_{i=1}^n x_i^2 - \frac{1}{n} (\sum_{i=1}^n x_i)^2}
+\]
+
+
+
+# Regression coefficients
+
+The output is approximated by a simple linear function has the form $f(X) = a + bX$
+
++ $a$ is the **intercept** (i.e. the value of the function when $X = 0$)
+
++ $b$ is the **slope** (the strength of the positive or negative relationship between input and output)
+
+The regression coefficients obtained using the least squares method:
+
++ $\hat{a}$ is the estimated intercept
+
++ $\hat{b}$ is the estimated slope
+
+
+# Directions of association
+
++ If the linear relationship is absent, then $\hat{b}$ should be fairly close to 0
+
++ If $\hat{b} > 0$, a \textcolor{blue}{positive} relationship is possible
+
++ If $\hat{b} > 0$, a \textcolor{blue}{negative} relationship is possible
+
+
+# Strength of association
+
++ The strength of association between the input and output can be captured by **Pearson's correlation coefficient** *if* the input has only one variable (e.g. a simple linear regression model)
+
+    - the correlation coefficient in a sample is denoted by $r \in [-1,1]$
+    - the closer $|r|$ is to 1, the stronger the relationship
+    - between $(-0.2, 0.2)$
+
+
++ The strength of association between the input and output can be captured by **Pearson's correlation coefficient** *if* the input has only one variable (e.g. a simple linear regression model)
+
+    - usually we square it and use $r^2$
+    - intepreted as the porportion of variance in $Y$ that is explained by $X$
+
+
+
+
+# Regression in statistical software programs
+
+The objective of the remaining lecture is to solve real prediction problems using statistical programming. You should be able to:
+
++ Setup the regression problem
+
++ Produce initial visualization of data
+
++ Obtain an estimated linear regression model in either R or Python
+
++ Read the outputs from R or Python
+
++ Make prediction or interpret the results  
+
+
+
+
+
+# Case study of regression in R and Python
+
++ Data "Cars93" from the MASS library (appeared in lecture 1)
+
++ Use data to answer the question: 
+
+    - Does car with a bigger fule tank capacity necessarily have more horsepower? 
+    - For a car with fuel tank capacity of 27 US gallons, what is the maximum horsepower roughly? 
+    - What about a car with 9 US gallons?
+    - What about a car with 16 gallons?
+
+
+# About the dataset
+
++ Data from 93 Cars on Sale in the USA in 1993
+
++ Input variable is "Fuel tank capacity" in US gallon
+
++ Output variable is "Horsepower" (maximum horsepower)
+
++ Randomly choose 10 cars/observations to be the testing data
+
++ The remaining 83 cars will be used to build the linear model
+
+
+
+# Data visualization (R)
+
+\begincols
+\begincol{.45\textwidth}
+```{r, fig.height=1.8, fig.width=2.5, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in"}
+library(MASS)
+data("Cars93")
+ggplot(data = Cars93, aes(x = "", y = Fuel.tank.capacity)) + geom_boxplot() + 
+  xlab("") + ylab("Fuel tank capacity") + coord_flip()
+```
+
+```{r, fig.height=1.8, fig.width=2.5, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in"}
+ggplot(data = Cars93, aes(x = Fuel.tank.capacity)) + geom_histogram(binwidth=2, colour="black", fill="white") + xlab("") + ylab("") +  theme(axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank())
+```
+\endcol
+\begincol{.45\textwidth}
+```{r, fig.height=1.8, fig.width=2.5, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in"}
+ggplot(data = Cars93, aes(x = "", y = Horsepower)) + geom_boxplot() + 
+  xlab("") + ylab("Horsepower") + coord_flip()
+```
+
+```{r, fig.height=1.8, fig.width=2.5, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in"}
+ggplot(data = Cars93, aes(x = Horsepower)) + geom_histogram(binwidth=10, colour="black", fill="white") + xlab("") + ylab("") +  theme(axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank())
+```
+\endcol
+\endcols
+
+
+# Data visualization (R)
+
+```{r, fig.height=3.4, fig.width=3.4, highlight=FALSE, size="tiny", width=50, echo=FALSE, out.width = "4in", warning=F, message=F}
+library(gridExtra)
+hist_top <- ggplot(data = Cars93)+geom_histogram(aes(x = Fuel.tank.capacity), binwidth=5)+ xlab("")
+empty <- ggplot()+geom_point(aes(1,1), colour="white") +
+         theme(axis.ticks=element_blank(), 
+               panel.background=element_blank(), 
+               axis.text.x=element_blank(), axis.text.y=element_blank(),           
+               axis.title.x=element_blank(), axis.title.y=element_blank())
+
+scatter <- ggplot(data = Cars93)+geom_point(aes(Fuel.tank.capacity, Horsepower))
+hist_right <- ggplot(data = Cars93)+geom_histogram(aes(x=Horsepower), binwidth=10)+coord_flip() +  xlab("")
+
+grid.arrange(hist_top, empty, scatter, hist_right, ncol=2, nrow=2, widths=c(6, 3), heights=c(2.4, 5))
+```
+
+
+# Data visualization (Python)
+
+
+```{r  out.width = "80%", echo=F}
+ include_graphics("figure_71.png") 
+```
+
+<!-- ```{python, hide=T, echo=F, message=F, warning=F, print=F} -->
+<!-- import matplotlib.pyplot as plt -->
+<!-- import pandas -->
+<!-- Cars93 = pandas.read_csv("Cars93.csv") -->
+
+<!-- # Cut the window in 4 parts -->
+<!-- fig, axes = plt.subplots(nrows=2, ncols=2) -->
+<!-- ax0, ax1, ax2, ax3 = axes.flatten() -->
+
+<!-- ax0.hist(Cars93['Fuel.tank.capacity'], histtype='bar') -->
+
+<!-- ax1.hist(Cars93['Horsepower'], histtype='bar') -->
+
+<!-- ax2.boxplot(Cars93['Fuel.tank.capacity']) -->
+<!-- ax2.set_title('Fuel tank capacity') -->
+
+<!-- ax3.boxplot(Cars93['Horsepower']) -->
+<!-- ax3.set_title('Horsepower') -->
+
+<!-- fig.tight_layout() -->
+<!-- plt.show() -->
+<!-- ``` -->
+
+
+# Data visualization (Python)
+
+```{r  out.width = "80%", echo=F}
+ include_graphics("figure_72.png") 
+```
+
+<!-- ```{python, echo=F, warning=F, message=F} -->
+<!-- import pandas -->
+<!-- import matplotlib.pyplot as plt -->
+<!-- Cars93 = pandas.read_csv("Cars93.csv") -->
+<!-- plt.figure() -->
+<!-- plt.plot(Cars93['Fuel.tank.capacity'], Cars93['Horsepower'], 'ro') -->
+<!-- plt.axis([5, 30, 30, 350]) -->
+<!-- plt.show() -->
+<!-- ``` -->
+
+
+
+
+# Summarizing the data (R)
+
+\begincols
+
+\begincol{.48\textwidth}
+
+```{r, size = "scriptsize"}
+mean(Cars93[["Fuel.tank.capacity"]])
+median(Cars93[["Fuel.tank.capacity"]])
+sd(Cars93[["Fuel.tank.capacity"]])
+```
+\endcol
+\begincol{.48\textwidth} 
+```{r, size = "scriptsize"}
+mean(Cars93[["Horsepower"]])
+median(Cars93[["Horsepower"]])
+sd(Cars93[["Horsepower"]])
+```
+\endcol 
+\endcols
+
+```{r, size = "small"}
+round(cor(Cars93[["Fuel.tank.capacity"]],Cars93[["Horsepower"]]),3)
+```
+
+
+# Summarizing the data (Python)
+
+\begincols 
+ \begincol{.48\textwidth} 
+
+```{python, size = "scriptsize"}
+import pandas
+Cars93 = pandas.read_csv("Cars93.csv")
+import scipy 
+from scipy.stats.stats import pearsonr
+print(Cars93[["Fuel.tank.capacity"]].mean())
+print(Cars93[["Fuel.tank.capacity"]].median())
+print(Cars93[["Fuel.tank.capacity"]].std())
+```
+\endcol
+\begincol{.48\textwidth}
+```{python, size = "scriptsize"}
+import pandas
+Cars93 = pandas.read_csv("Cars93.csv")
+import scipy 
+from scipy.stats.stats import pearsonr
+print(Cars93[["Horsepower"]].mean())
+print(Cars93[["Horsepower"]].median())
+print(Cars93[["Horsepower"]].std())
+```
+\endcol
+\endcols
+
+```{python, size = "small"}
+import pandas
+Cars93 = pandas.read_csv("Cars93.csv")
+from scipy.stats.stats import pearsonr
+pearsonr(Cars93[["Fuel.tank.capacity"]],Cars93[["Horsepower"]])
+```
+
+
+# Estimated linear model in R
+
+```{r, cache=T}
+summary(lm(Horsepower~Fuel.tank.capacity, data = Cars93))
+```
+
+
+# Estimated linear model in Python
+
+```{python, cache=T, warning=F, message=F}
+import pandas
+import numpy as np
+import stats
+Cars93 = pandas.read_csv("Cars93.csv")
+x = np.array(Cars93[["Fuel.tank.capacity"]])
+y = np.array(Cars93[["Horsepower"]])
+x.reshape((len(x), 1))
+y.reshape((len(y), 1))
+
+from sklearn.linear_model import LinearRegression
+regression_model = LinearRegression()
+regression_model.fit(x, y)
+
+intercept = regression_model.intercept_[0]
+print("The intercept for our model is {:.2f}".format(intercept))
+slope = regression_model.coef_[0][0]
+print("The slope for our model is {:.2f}".format(slope))
+r2 = regression_model.score(x, y)
+print("The amount of variability in Y can be explained using X is {:.2f}".format(r2))
+```
+
+
+
+# Interpreting the results
+
++ The model is written as "Horsepower~Fuel.tank.capacity"
+
++ **Regression Coefficients**:
+
+Predictors    |    Estimate   | Std. Error  | t value     | Pr(>|t|)    
+------------- | -----------   | ----------  | ----------- | -----------
+(Intercept)   |     -45.613   |  19.968     | -2.284      | 0.0247 *  
+Fuel.tank.capacity |   11.368 |   1.176     |  9.667      | \textcolor{blue}{1.27e-15} ***
+
+
++ **Significance codes**:
+
+Extremely Strong   |  Strong   | Moderate   | Weak | No evidence against $H_o$  
+------------- | ----------- | -----------| -----------| -----------
+0 ***         |   0.001 **| 0.01 *     |0.05 .      | 0.1-1
+
+
+# Interpreting the results - Cont'd
+
++ Residual standard error: 36.99 on 91 degrees of freedom
+
++ R-squared 
+
+    - Multiple R-squared:  **0.5066**
+    - Adjusted R-squared:  0.5012 
+
++ F-statistic: 93.45 on 1 and \textcolor{blue}{91} DF, 
++ **p-value**: \textcolor{blue}{1.268e-15}
+
+What additional information do you observe?
+
+
+
+# Back to the question
+
+Does car with a bigger fuel tank capacity (FTC) necessarily have more horsepower? 
+
++ There is extremely strong evidence of a car with larger FTC having more horsepower. 
+
++ For one US gallon increase in fuel tank capacity, the maximum horsepower increases by 11 on average.
+
+
+
+# Prediction problems:
+
+
++ For a car with fuel tank capacity of 27 US gallons, what is the maximum horsepower roughly? 
+
++ What about a car with 9 US gallons?
+
++ What about a car with 16 gallons?
+
+
+# Prediction in R
+
+```{r, cache=T}
+new <- data.frame("Fuel.tank.capacity" = c(27, 9, 16))
+predict(lm(Horsepower~Fuel.tank.capacity, data = Cars93), 
+        newdata = new)
+```
+
+# Prediction in Python
+
+```{python, cache=T}
+x_new = [[27], [9], [16]]
+y_predict = regression_model.predict(x_new)
+print(y_predict)
+```
+
+
+# Interpret the results
+
++ For a car with fuel tank capacity of 27 US gallons, the *predicted* maximum horsepower is roughly 261.
+
++ For a car with fuel tank capacity of 9 US gallons, the *predicted* maximum horsepower is roughly 57
+
++ For a car with fuel tank capacity of 16 US gallons, the *predicted* maximum horsepower is roughly 136
+
+
+# Are these results trustworthy?
+
+```{r, echo=F}
+new_pred <- data.frame("Fuel.tank.capacity" = c(27, 9, 16), "Horsepower" = predict(lm(Horsepower~Fuel.tank.capacity, data = Cars93), newdata = new))
+ggplot(data = Cars93, aes(Fuel.tank.capacity, Horsepower))+geom_point() + geom_smooth(method = "lm", se = FALSE) +  geom_point(aes(Fuel.tank.capacity, Horsepower), data = new_pred, colour="red", size=5) 
+```
+
+
+# Next class
+
++ Linear regression as a statistical model
+
++ Classic assumptions of linear regression 
+
++ More examples of linear regression 
+
++ Tests for equality of means as a special case of a simple linear regression
+
++ Extending to multiple predictors in R
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ----  -->
+<!-- <!-- add new slide without header --> 
+<!-- \begin{center} -->
+<!-- \textcolor{blue}{  -->
+<!--     \Large{Using sampling to estimate parameters} -->
+<!-- } -->
+<!-- \end{center} -->
+
+
+<!-- # Two Column Layout -->
+<!-- \begincols -->
+<!--   \begincol{.48\textwidth} -->
+<!-- This slide has two columns. -->
+<!--   \endcol -->
+<!-- \begincol{.48\textwidth} -->
+<!-- ```{r pressure} -->
+<!-- plot(pressure) -->
+<!-- ``` -->
+<!--   \endcol -->
+<!-- \endcols -->
+
+<!--  ```{r  out.width = "80%", echo=F} -->
+<!--  include_graphics("fig261.pdf")  -->
+<!--  ``` -->
+
+
+<!--```{r, fig.height=3, fig.width=4, highlight=FALSE}
+ggplot(data = Cars93, aes(x = "", y = Fuel.tank.capacity)) + 
+  geom_boxplot() + xlab("") + ylab("capacity in US gallons") + 
+  ggtitle(paste("Fuel tank capacity"))  
+#boxplot(Cars93$Fuel.tank.capacity, main = "Fuel tank capacity", ylab = "capacity in US gallons")
+``` -->
+
+
+<!-- ```{r, fig.width=3, fig.height=3, comment=NA} -->
+<!-- library(ggplot2) -->
+<!-- ggplot(data=Cars93, aes(x=Rev.per.mile)) + -->
+<!--   geom_histogram(binwidth=100, colour="black", fill="white") +  -->
+<!--   xlab("Engine revolutions per mile")  +  -->
+<!--   ggtitle("Engine revolutions \n per mile (in highest gear).") -->
+<!-- mean(Cars93$Rev.per.mile); median(Cars93$Rev.per.mile) -->
+<!-- ``` -->

@@ -418,7 +418,7 @@ is $\bar{X} > \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/n$ and $\bar{X} < \mu_o - \Phi
  The type II error for a particular $\mu' \ne \mu_o$ is:
 
 \begin{align}
-\beta(\theta') &= \text{P}(\mu_o - \Phi^{-1}(1-\alpha/2)\sigma/n < \bar{X} <  \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/n | \theta = \theta')\\
+\beta(\mu') &= \text{P}(\mu_o - \Phi^{-1}(1-\alpha/2)\sigma/n < \bar{X} <  \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/n | \mu = \mu')\\
 &= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha/2) < \frac{\bar{X}-\mu'}{\sigma/n} <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha/2))\\
 &= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha/2) < Z <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha/2))\\
 & = \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha/2)\Big)- \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} - \Phi^{-1}(1-\alpha/2)\Big)
