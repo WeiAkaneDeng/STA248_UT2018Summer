@@ -2,7 +2,9 @@
 title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 ---
 
-**A possible 2% bonus**: the majority of the class voted for a 2% bonus mark in class today. This is granted based on completion of either all TRUE/FALSE questions (with justifications or counter examples), five short answer questions (1-5, 6-10, etc, 20-25), three derivations (1-3 or 4-6) or one of the five problems by **Monday August 13th @6pm**.
+**A possible 2% bonus**: the majority of the class voted for a 2% bonus mark in class today. This is granted based on completion of either all TRUE/FALSE questions (with justifications or counter examples), five short answer questions (1-5, 6-10, etc, 20-25), three derivations (1-3 or 4-6) or one of the five problems by **Monday August 13th @6pm**. 
+
++ **Question 3 of the five problems will not be counted towards the 2% bonus**.
 
 + You can find the questions from lecture 9 slides.
 
