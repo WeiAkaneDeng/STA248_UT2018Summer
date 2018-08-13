@@ -6,6 +6,8 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 
 + **Question 3 of the five problems will not be counted towards the 2% bonus**.
 
++ **Question 2** did not give a sample size, you can calculate a sample size based on when the 95% CI covers the null hypothesis parameter value, and claim that above this value, there is evidence to reject at 5% significance while below this value you fail to reject.
+
 + You can find the questions from lecture 9 slides.
 
 + You will get feedback on your solutions, and 2% will be granted once the solutions are deemed satisfactory.
