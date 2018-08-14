@@ -27,22 +27,23 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 + [Wei Q. Deng](wei.deng@mail.utoronto.ca)
 + Office hours: Monday 4-6pm, Wednesday 4-6pm (from second week)
 + Office hour location: SS623B (TA office in the basement of Sidney Smith - starting July 9th)
-+ **Office hour for next week July 30-August 2nd has been cancelled, please resolve your questions in lecture or email me during this time**
 
 
 ### Final exam
 + Date: **August 17th**
 + Duration: 9am-12pm
 + Location: **EX200**
-+ Extra office hours: August 13th, 2-6pm (SS623B); August 16th, 10am-2pm (SS623B);
 + If you want information (no concept nor definitions) included on the final exam information sheet, please email me between July 24th (after midterm) and July 28th, and I will try to accommodate.  
 + Review lecture: August 13th 6-9pm, please bring your questions to class and be prepared to work.
-
++ Extra office hours: August 13th, 2-6pm (SS623B); **August 16th, 9am-11am and 12pm-2pm (SS623B)**;
++ The first and last a few pages of the final exam is [here](https://weiakanedeng.github.io/STA248_UT2018Summer/STA248Final_ExamFrontBack.pdf)
 
 
 ### Lecture Slides
 
 + [lecture 9](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture9_sol.pdf) (August 13th) is a review lecture of all topics covered. Please try as many questions as you can and bring any questions to the class.
+
+    - Partial solution + hints can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture9_sol_MondayGood.pdf)
 
 + [lecture 8](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture8.pdf) (August 8th) covers the introduction to linear regression with a little bit of theory in connection to hypothesis testing as well as confidence intervals. 
 
