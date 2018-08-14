@@ -43,7 +43,7 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 
 + [lecture 9](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture9_sol.pdf) (August 13th) is a review lecture of all topics covered. Please try as many questions as you can and bring any questions to the class.
 
-    - Partial solution + hints can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture9_sol_MondayGood.pdf)
+    - Partial solution + hints can be found [here](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture9_sol_MondayGood.pdf). **Note for the one-sided interval the signs and the size of the interval are now updated.**
 
 + [lecture 8](https://weiakanedeng.github.io/STA248_UT2018Summer/Lecture8.pdf) (August 8th) covers the introduction to linear regression with a little bit of theory in connection to hypothesis testing as well as confidence intervals. 
 
