@@ -306,11 +306,11 @@ include_graphics("type12.pdf")
 
 # Type I error simulation setup
 
-Suppose $X_1, \dots, X_n \sim \mathcal{N}(\mu, 5)$, where $n = 100$. We want to test the null hypothesis that the true mean $\mu = 0$ with a two-sided test (i.e. the alternative is $\mu\ne0$).
+Suppose $X_1, \dots, X_n \sim \mathcal{N}(\mu, \sigma^2 = 5)$, where $n = 100$. We want to test the null hypothesis that the true mean $\mu = 0$ with a two-sided test (i.e. the alternative is $\mu\ne0$).
 
-+ Step 1: Simulate $x_1, \dots, x_{500}$ according to $\mathcal{N}(0, 5)$.
++ Step 1: Simulate $x_1, \dots, x_{500}$ according to $\mathcal{N}(0, 5 \sigma^2 = )$.
 
-+ Step 2: Perform one sample z-test ($\bar{X} \sim \mathcal{N}(\mu, 5/{500})$) and obtain a p-value.
++ Step 2: Perform one sample z-test ($\bar{X} \sim \mathcal{N}(\mu,  \sigma^2 = 5/{500})$) and obtain a p-value.
 
 + Repeat Step 1 and 2, $B = 1000$ times, giving a vector of p-values $p_1, \dots, p_{1000}$.
 
@@ -410,7 +410,7 @@ Suppose the null hypothesis is $\theta = \theta_o$:
 
 - for a two-sided alternative
     
-is $\bar{X} > \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/n$ and $\bar{X} < \mu_o - \Phi^{-1}(1-\alpha/2)\sigma/n$$.
+is $\bar{X} > \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/\sqrt{n}$ and $\bar{X} < \mu_o - \Phi^{-1}(1-\alpha/2)\sigma/\sqrt{n}$.
 
 
 # An example of Type II error under the z-test
@@ -418,10 +418,10 @@ is $\bar{X} > \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/n$ and $\bar{X} < \mu_o - \Phi
  The type II error for a particular $\mu' \ne \mu_o$ is:
 
 \begin{align}
-\beta(\mu') &= \text{P}(\mu_o - \Phi^{-1}(1-\alpha/2)\sigma/n < \bar{X} <  \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/n | \mu = \mu')\\
-&= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha/2) < \frac{\bar{X}-\mu'}{\sigma/n} <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha/2))\\
-&= \text{P}(\frac{\mu_o -\mu'}{\sigma/n} - \Phi^{-1}(1-\alpha/2) < Z <  \frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha/2))\\
-& = \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} + \Phi^{-1}(1-\alpha/2)\Big)- \Phi\Big(\frac{\mu_o - \mu'}{\sigma/n} - \Phi^{-1}(1-\alpha/2)\Big)
+\beta(\mu') &= \text{P}(\mu_o - \Phi^{-1}(1-\alpha/2)\sigma/\sqrt{n} < \bar{X} <  \mu_o + \Phi^{-1}(1-\alpha/2)\sigma/\sqrt{n} | \mu = \mu')\\
+&= \text{P}(\frac{\mu_o -\mu'}{\sigma/\sqrt{n}} - \Phi^{-1}(1-\alpha/2) < \frac{\bar{X}-\mu'}{\sigma/\sqrt{n}} <  \frac{\mu_o - \mu'}{\sigma/\sqrt{n}} + \Phi^{-1}(1-\alpha/2))\\
+&= \text{P}(\frac{\mu_o -\mu'}{\sigma/\sqrt{n}} - \Phi^{-1}(1-\alpha/2) < Z <  \frac{\mu_o - \mu'}{\sigma/\sqrt{n}} + \Phi^{-1}(1-\alpha/2))\\
+& = \Phi\Big(\frac{\mu_o - \mu'}{\sigma/\sqrt{n}} + \Phi^{-1}(1-\alpha/2)\Big)- \Phi\Big(\frac{\mu_o - \mu'}{\sigma/\sqrt{n}} - \Phi^{-1}(1-\alpha/2)\Big)
 \end{align}
 
 From this expression, can you decrease the type II error for a particular $\mu'$?
@@ -430,11 +430,11 @@ From this expression, can you decrease the type II error for a particular $\mu'$
 
 # Type II error simulation setup
 
-Suppose $X_1, \dots, X_n \sim \mathcal{N}(\mu, 5)$, where $n = 10$. We want to find the type II error for $\mu' = 0.5$ against the null hypothesis that the true mean $\mu = 0$ with a two-sided test (i.e. the alternative is $\mu\ne0$).
+Suppose $X_1, \dots, X_n \sim \mathcal{N}(\mu, \sigma^2 = 5)$, where $n = 10$. We want to find the type II error for $\mu' = 0.5$ against the null hypothesis that the true mean $\mu = 0$ with a two-sided test (i.e. the alternative is $\mu\ne0$).
 
-+ Step 1: Simulate $x_1, \dots, x_{10}$ according to $\mathcal{N}(\mu', 5)$.
++ Step 1: Simulate $x_1, \dots, x_{10}$ according to $\mathcal{N}(\mu', \sigma^2 =5)$.
 
-+ Step 2: Perform one sample z-test ($\bar{X} \sim \mathcal{N}(\mu_o, 5/{10})$) and obtain a p-value.
++ Step 2: Perform one sample z-test ($\bar{X} \sim \mathcal{N}(\mu_o, \sigma^2 = 5/{10})$) and obtain a p-value.
 
 + Repeat Step 1 and 2, $B = 1000$ times, giving a vector of p-values $p_1, \dots, p_{1000}$.
 
