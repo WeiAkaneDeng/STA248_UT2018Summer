@@ -35,7 +35,10 @@ title: "Welcome to STA248H1 - Statistics for Computer Scientists"
 + Location: **EX200**
 + If you want information (no concept nor definitions) included on the final exam information sheet, please email me between July 24th (after midterm) and July 28th, and I will try to accommodate.  
 + Review lecture: August 13th 6-9pm, please bring your questions to class and be prepared to work.
-+ Extra office hours: August 13th, 2-6pm (SS623B); **August 16th, 9am-11am and 12pm-2pm (SS623B)**;
++ Extra office hours: 
+    - August 13th, 2-6pm (SS623B);
+    - **Cancelled: August 16th, 9am-11am and 12pm-2pm (SS623B)**;
+    - **TA office hour August 16th 11am-12pm (SS623B)**
 + The first and last a few pages of the final exam is [here](https://weiakanedeng.github.io/STA248_UT2018Summer/STA248Final_ExamFrontBack.pdf)
 
 
