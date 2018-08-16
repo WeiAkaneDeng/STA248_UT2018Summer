@@ -165,7 +165,8 @@ The probability of observing something more extreme than at the expected signifi
 
 + a conditional probability that the observed test statistic is more extreme than would be expected under the null hypothesis.
 
-+ Two-sided test: $\text{p-value} = \text{P}(T > t_\text{obs}| \mu = \mu_o) + \text{P}(T < - t_\text{obs}| \mu = \mu_o)$ 
++ Two-sided test: $\text{p-value} = \text{P}(T > |t_\text{obs}|| \mu = \mu_o)$ or
+$2\text{min}(\text{P}(T > t_\text{obs}| \mu = \mu_o), \text{P}(T < t_\text{obs}| \mu = \mu_o))$. 
 
 + One-sided test: $\text{p-value} = \text{P}(T > t_\text{obs}| \mu = \mu_o)$ 
 
